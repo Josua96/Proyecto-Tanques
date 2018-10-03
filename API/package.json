@@ -1,0 +1,20 @@
+{
+  "name": "tanks_game",
+  "version": "1.0.0",
+  "description": "api encargada de controlar todos los eventos asociados a una partida del juego",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tanks",
+    "game",
+    "concurrency",
+    "threads"
+  ],
+  "author": "julio,nathalie,josua",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
