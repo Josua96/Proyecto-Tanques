@@ -1,0 +1,27 @@
+
+
+
+.startButton{
+    margin-top: 30%;
+    margin-left: 35%;
+    height: 20%;
+    width: 30%;
+    font-size: xx-large;
+    color: black;
+    background-color: red;
+}
+
+.startButton:hover{
+    color: white;
+    background-color: lightgreen;
+}
+
+.buttonDiv{
+    background-image: url('../../assets/Images/Background/BattleCity.png');
+    background-repeat: no-repeat;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+    background-position: center; 
+
+}

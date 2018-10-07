@@ -16,6 +16,9 @@ export class GameMainViewComponent implements OnInit,AfterViewInit {
   public head:string;
   public message: string;
 
+  private userName: string;
+  private tankImagePath: string;
+
   private inputHandler: InputHandler;
   private boardController: BoardController;
 
@@ -28,6 +31,8 @@ export class GameMainViewComponent implements OnInit,AfterViewInit {
   }
   
   constructor(private dataExchangerController: ConnectioncontrollerService) { 
+    this.tankImagePath="../../assets/Images/Tanks/Red/redTank.png";
+    this.userName= localStorage.getItem("userName");
     this.inputHandler= new InputHandler();
     
   }

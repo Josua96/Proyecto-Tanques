@@ -9,7 +9,7 @@ import { ConnectioncontrollerService } from './Services/connectioncontroller.ser
 })
 export class AppComponent {
   title = 'Game';
-
+/*
   public head:string;
   public message: string;
 
@@ -30,5 +30,5 @@ export class AppComponent {
   sendMessage(head:string ,data:Object){
     this.dataExchangerController.sendMsg(head,data);
   }
-
+*/
 }

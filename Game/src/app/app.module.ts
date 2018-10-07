@@ -7,11 +7,12 @@ import { ConnectioncontrollerService } from './Services/connectioncontroller.ser
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { GameMainViewComponent } from './game-main-view/game-main-view.component';
+import { MainViewComponent } from './main-view/main-view.component';
 
 //here is necesary to set all module routes
 const routes: Routes = [
-  { path: '', component: GameMainViewComponent},
-  {path:'gameMainView', component: AppComponent}
+  { path: '', component: MainViewComponent},
+  {path:'gameMainView', component: GameMainViewComponent}
 ];
 
 const routerModule = RouterModule.forRoot(routes);
@@ -19,7 +20,8 @@ const routerModule = RouterModule.forRoot(routes);
 @NgModule({
   declarations: [
     AppComponent,
-    GameMainViewComponent
+    GameMainViewComponent,
+    MainViewComponent
   ],
   imports: [
     routerModule,
