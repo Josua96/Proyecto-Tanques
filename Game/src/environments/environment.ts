@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  ws_url: 'http://localhost:1001',
+  keyCodes: {right:39, left:37,up:38,down:40,shoot:32},
+  playerActions:{shoot:"shoot", move:"move",join:"joinGame"},
+  serverUpdateMessages:{updateMessage:"gameState"},
+  directions:{left:0, up:1, right:2, down:3}
 };
 
 /*

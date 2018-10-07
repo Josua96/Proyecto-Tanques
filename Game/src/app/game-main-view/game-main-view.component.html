@@ -1,0 +1,13 @@
+<p> Game view Component</p>
+
+<div id="gameBoard" class="container-fluid">
+<canvas #canvas></canvas>
+</div>
+
+
+<div class="container-fluid">
+    <h1>Prueba para enviar mensaje </h1>
+    <input type="text" [(ngModel)]="head"  placeholder="Encabezado">
+    <input type="text" [(ngModel)]="message"  placeholder="Mensaje">
+    <button (click)="send()" > Enviar mensaje</button>
+</div>
