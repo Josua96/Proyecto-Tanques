@@ -12,7 +12,7 @@ export class InputHandler {
         this.movementDirections= environment.directions;
     }
 
-    public getAction(keyCode:Number): Object{
+    public getAction(keyCode:Number): Object {
         if (keyCode === this.keyCodes.shoot){
             return {"validAction":true,"action": this.playerActions.shoot};
         }

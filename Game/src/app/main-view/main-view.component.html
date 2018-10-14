@@ -1,8 +1,9 @@
 <div class="buttonDiv">
-
-     <button class="btn btn-large startButton" data-toggle="modal" data-target="#userName"> Unirse al juego </button>
+     <button class="btn btn-large startButton" data-toggle="modal" data-target="#userName"> Unirse al juego       
+        <span class="glyphicon glyphicon-play"></span>
+    </button>     
 </div>
-  
+
 
 
 <!-- Modal -->
@@ -19,8 +20,8 @@
         <input type="text" class="form-control" [(ngModel)]="userName">
       </div>
       <div class="modal-footer">
-        
-        <button type="button" class="btn btn-primary" (click)="goToGame()" >Ir a jugar </button>
+
+        <button type="button" class="btn btn-primary" (click)="goToGame()" >Jugar </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal"> Cancelar</button>
       </div>
     </div>

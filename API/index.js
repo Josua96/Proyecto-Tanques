@@ -34,11 +34,6 @@ app.get('/test',function(req, res)
 
 
 
-var webService = app.listen(1001, function() {
-    var host = webService.address().address;
-    var port = webService.address().port;
-    console.log("Executing at %s:%s", host, port);  
-});
 
 
 var io = require('socket.io')(webService);
@@ -94,3 +89,9 @@ io.on('connection', (socket) => {
 
 
 });
+var webService = app.listen(8083, function() {
+    var host = webService.address().address;
+    var port = webService.address().port;
+    console.log("Executing at %s:%s", host, port);  
+});
+

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  ws_url: 'http://localhost:1001',
+  ws_url: 'http://localhost:8083',
   keyCodes: {right:39, left:37,up:38,down:40,shoot:32},
   playerActions:{shoot:"shoot", move:"move",join:"joinGame"},
   serverUpdateMessages:{updateMessage:"gameState"},

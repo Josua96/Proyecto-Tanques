@@ -16,9 +16,13 @@ export class MainViewComponent implements OnInit {
   }
 
   goToGame(){
-    if (this.userName.length > this.userNameLength ){
-      localStorage.setItem("userName", this.userName);
+    if (this.userName.length > this.userNameLength )
+    {
+      localStorage.setItem("userName", this.userName);      
       window.location.href='gameMainView';
+    }
+    else{
+      alert("El aliar debe tener al menos 5 caracteres"); 
     }
     
   }

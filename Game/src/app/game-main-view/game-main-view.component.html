@@ -1,16 +1,20 @@
-<label class="viewHead"> User Name: {{userName}} </label>
+<div class="gameMainView">
+    <div class="gameHeader">
+  
+        <label class="headItem"> User name: {{userName}} </label>
+        <label class="headItem"> Your tank: </label>       
+        <img class="tankImage" [src]="tankImagePath">
+        <button class="btn btn-primary" id="boton1" style="margin-left:10px;" (click)="newGame()" >
+            Iniciar
+            <span class="glyphicon glyphicon-play"></span>
+        </button>
+                
+    </div>
 
-<label class="viewTank"> Your Tank: </label>
-<img class="tankImage" [src]="tankImagePath">
-
-<div id="gameBoard" class="container-fluid">
-<canvas #canvas></canvas>
-</div>
-
-
-<div class="container-fluid">
-    <h1>Prueba para enviar mensaje </h1>
-    <input type="text" [(ngModel)]="head"  placeholder="Encabezado">
-    <input type="text" [(ngModel)]="message"  placeholder="Mensaje">
-    <button (click)="send()" > Enviar mensaje</button>
+    <div class="gameBody">
+        <div id="gameBoard" class="gameDisplay container-fluid">
+            <canvas height="720px" width="720px" id="lienzo" style="height: 580px;" #canvas>
+            </canvas>
+        </div>   
+    </div>
 </div>
