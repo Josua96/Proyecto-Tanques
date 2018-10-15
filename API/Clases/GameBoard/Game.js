@@ -1,6 +1,4 @@
 
-//works for walls and eagle
-
 const EventManager = require('../GameQueueManager/EventsManager.js');
 const Event = require('../GameQueueManager/Event.js');
 const Board = require('./Board.js');
@@ -46,6 +44,8 @@ class Game{
             this.initGame();
         }
 
+        //aparecer el tanque del jugador
+
     }
 
     getGameBoard(){
@@ -64,8 +64,8 @@ class Game{
 
     }
 
-    enemyGeneration(){
-
+    enemyGeneration(eventHandler,boardController){
+        
     }
 
     initGame(){
