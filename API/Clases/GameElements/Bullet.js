@@ -1,6 +1,6 @@
 class Bullet{
 
-	constructor(id,image,type,damage,speed,direction,x,y){
+	constructor(id,image,type,damage,speed,direction,x,y,isEnable){
 		
 		/****************************
 		General information
@@ -19,6 +19,7 @@ class Bullet{
         this.direction= direction;
         this.x=x;
         this.y=y;
+        this.isEnable=true;
 	
     }
 
@@ -36,6 +37,29 @@ class Bullet{
 
     getDamage(){
         return this.damage;
+    }
+
+    getIsEnable(){
+        return this.isEnable;
+    }
+
+    setIsEnable(value){
+        this.isEnable = value;
+    }
+
+    moveBullet(){
+        if(this.direction==0){
+            this.x = this.x-1;
+        }
+        if else(this.direction==1){
+            this.y = this.y+1;
+        }
+        if else(this.direction==2){
+            this.x=this.x+1;
+        }
+        else{
+            this.y=this.y-1;
+        }
     }
 
 

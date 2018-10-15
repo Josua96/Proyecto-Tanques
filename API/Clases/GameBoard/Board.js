@@ -29,6 +29,14 @@ class Board{
     	return this.gameboard;
     }
 
+    getWidth(){
+        return this.width;
+    }
+
+    getHeight(){
+        return this.height;
+    }
+
 
     initBoard(){
     	var i;
@@ -91,17 +99,22 @@ class Board{
         return true;
     }
 
-    setNewPlayer(playerObject){
+    getPosition(x,y){
+        return this.gameBoard[x][y];
+    }
+
+    setNewTank(tankObject,iWidth,fWidth){
         var inGame=false;
         var x;
         var y;
 
         while(!inGame){
-            x= this.getRandomPosition(this.width,0);
-            y= this.getRandomPosition(this.height,Math.round(this.height/2));
+            x= this.getRandomPosition(fWidth,iWidth);
+            y= this.getRandomPosition(this.height,0);
             if (this.gameBoard[x][y].isFree()){
-                this.gameBoard[x][y]= playerObject;
-                playerObject.setPosition(x,y);
+                this.gameBoard[x][y]= tankObject;
+                tankObject.setPosition(x,y);
+                tankObject.setIsEnable(true);
                 inGame=true;
             }
         }

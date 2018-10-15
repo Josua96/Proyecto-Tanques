@@ -4,7 +4,6 @@ class LifeEnhancePower extends Power {
 
     constructor(image,tank,time,active,lifeValue){
         super(image,tank,time,active);
-        this.applyPower(lifeValue);
     
     }
 

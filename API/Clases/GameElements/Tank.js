@@ -2,7 +2,7 @@
 
 class Tank{
 
-	constructor(id,playerID,type,bulletDamage,x,y,leftImage,upImage,rightImage, downImage,bulletImage){
+	constructor(id,playerID,type,bulletDamage,x,y,leftImage,upImage,rightImage, downImage,bulletImage,isEnable){
 		
 		/****************************
 		General information
@@ -27,7 +27,16 @@ class Tank{
 		this.bulletDamage= bulletDamage;
 		this.canCrossObstacles=false;
 		this.isImmune=false;
+		this.isEnable=false;
 
+	}
+
+	setIsEnable(value){
+		this.isEnable = value;
+	}
+
+	getIsEnable(){
+		return this.isEnable;
 	}
 
 	setDirection(direction){

@@ -4,7 +4,6 @@ class FasterShootPower extends Power {
 
     constructor(image,tank,time,active,velocity){
         super(image,tank,time,active);
-        this.applyPower(velocity);
     }
 
     applyPower(velocity){

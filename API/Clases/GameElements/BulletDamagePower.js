@@ -4,7 +4,6 @@ class BulletDamagePower extends Power {
 
     constructor(image,tank,time,active,damage){
         super(image,tank,time,active);
-        this.applyPower(damage);
     }
 
     applyPower(damage){

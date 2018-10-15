@@ -31,7 +31,7 @@ class Game{
          Game component instantiation
         ********************************/
         this.boardController= new Board(this.width,this.height,wallsNumber,enemiesNumber);
-        this.eventHandler = new EventManager(this.boardController.getGameBoard(),eventKeys,300,powerCheckingTime);
+        this.eventHandler = new EventManager(this.boardController,eventKeys,300,powerCheckingTime);
         this.boardController.setWallsAndEnemies(wallsNumber,enemiesNumber,this.eventHandler.getEnemies());
         
     }

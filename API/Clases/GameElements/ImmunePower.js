@@ -6,7 +6,6 @@ class ImmunePower extends Power {
 
     constructor(image,tank,time,active){
         super(image,tank,time,active);
-        this.applyPower();
     }
 
     applyPower(){
