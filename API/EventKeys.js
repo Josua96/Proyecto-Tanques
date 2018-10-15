@@ -1,0 +1,1 @@
+module.exports={"appear":0, "movement":1,"shoot":2};
