@@ -1,5 +1,5 @@
 
-const gameData= const Generic = require('../Clases/Data.js');
+const gameData= require('../Clases/Data.js');
 
 class BoardPosition{
 

@@ -5,9 +5,12 @@ class GhostPower extends Power {
 
     constructor(image,tank,time,active){
         super(image,tank,time,active);
-        this.applyPower();
     }
 
+    setPowerToActive(){
+
+        this.applyPower();
+    }
     applyPower(){
         
         if(this.tank!= undefined){
@@ -19,7 +22,8 @@ class GhostPower extends Power {
                     this.tank.setCanCrossObstacles(false);
                 }
                 this.active=false;
-              }, this.time)
+                this.activeTime=0;
+              }, this.activeTime)
         }
     }
 }

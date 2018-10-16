@@ -12,6 +12,7 @@ class Bullet{
         //in miliseconds
         this.speed=speed;
         this.damage=damage;
+        this.isEnable=true;
 		
 		/****************************
 		ActionsControl
@@ -20,6 +21,14 @@ class Bullet{
         this.x=x;
         this.y=y;
 	
+    }
+
+    getIsEnable(){
+        return this.isEnable;
+    }
+
+    setIsEnable(value){
+        this.isEnable= value;
     }
 
     getType(){
@@ -37,6 +46,16 @@ class Bullet{
     getDamage(){
         return this.damage;
     }
+
+    moveBullet(){
+
+    }
+
+    setDirection(tank){
+
+    }
+
+    
 
 
 }

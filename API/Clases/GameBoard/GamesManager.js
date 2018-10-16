@@ -8,11 +8,11 @@ class GamesManager{
 
     }
 
-    addNewGame(width,height,wallsNumber,enemiesNumber, pwInterval,tankAppearInterval,tShootInterval,tMovementInterval,pwCheckingInterval){
+    addNewGame(width,height,wallsNumber,enemiesNumber, pwInterval,tankAppearInterval,tShootInterval,tMovementInterval,pwCheckingInterval,bulletDamage){
         //para esta implementación solo permitir un juego compartido para todos
         if (this.games.length===0){
             this.games.push(new Game(this.games.length,width,height,wallsNumber,enemiesNumber,pwInterval,
-                tankAppearInterval,tShootInterval,tMovementInterval,pwCheckingInterval));
+                tankAppearInterval,tShootInterval,tMovementInterval,pwCheckingInterval,bulletDamage));
         }
         
     }

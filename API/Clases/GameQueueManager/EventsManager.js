@@ -6,13 +6,13 @@ class EventsManager{
 	constructor(gameBoard,eventKeys,processingTime, powerCheckingTime){
 
         this.gameBoard=gameBoard;
+
         this.eventsKeys=eventKeys;
 
         //every player and enemy is represented like a dictionary  {"id": object}
         this.enemies={};
         this.players={};
         this.inUse=false;
-
         this.eagleWasKilled=false;
 
         /****** QUEUES ******/
@@ -31,9 +31,11 @@ class EventsManager{
         return this.enemies;
     }
 
-    insertInDict(dic,newObject){
-
-        newObject.id=Object.keys(dic).length;
+    insertInDict(dic,newObject,isPlayer){
+        if (!isPlayer){
+            newObject.id=Object.keys(dic).length;
+        }
+        
         dic[newObject.id]=newObject;
         
     }
@@ -55,7 +57,7 @@ class EventsManager{
             var i;
 
             for(i=0; i < this.activePowers.length; i++){
-                if (!this.activePowers[i].isActive){
+                if (!this.activePowers[i].){
                     this.activePowers.splice(i,1);
                 }
             }
@@ -80,7 +82,7 @@ class EventsManager{
 
             this.proccessEvents();
 
-        },this.processingEvents);
+        },this.processingTime);
 
         this.powersInterval= setInterval(function(){
             this.checkPowers();            

@@ -8,12 +8,20 @@ class LifeEnhancePower extends Power {
     
     }
 
+    
+    setPowerToActive(){
+
+        this.applyPower(this.lifeValue);
+
+    }
+
     applyPower(lifeValue){
         if (this.tank!=undefined){
             this.tank.increaseLife(lifeValue);
         }
 
         this.active=false;
+        this.activeTime=0;
     }
 }
 

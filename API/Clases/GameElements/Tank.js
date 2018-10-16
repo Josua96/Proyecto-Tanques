@@ -13,7 +13,10 @@ class Tank{
 		this.x=x;
 		this.y=y;
 		this.type= type;
+
 		this.life=100;
+		this.power= undefined;
+		this.isEnable= false;
 
 		/****************************
 		ActionsControl
@@ -21,7 +24,8 @@ class Tank{
 		//in miliseconds
 		this.bulletSpeed=  500;
 		this.direction=-1;
-		
+		this.nextDirection=-1;
+
 		this.imagesNames=[leftImage,upImage,rightImage, downImage,bulletImage];
 		this.imageInUse=imagesNames[0];
 		this.bulletDamage= bulletDamage;
@@ -30,9 +34,42 @@ class Tank{
 
 	}
 
+	getIsEnable(){
+		return this.isEnable;
+	}
+
+	setIsEnable(value){
+		this.isEnable= value;
+	}
+
+	setPower(powerObject){
+		this.power= powerObject;
+	}
+
+	applyPower(){
+
+		if (this.power!= undefined && !this.power.isActive()){
+			this.power.setPowerToActive();
+		}
+	}
+
+	setIsEnable(value){
+		this.isEnable=value;
+	}
+
+	getIsEnable(){
+		return this.isEnable;
+	}
+
 	setDirection(direction){
 		this.direction=direction;
 	}
+
+	setNextDirection(direction){
+		this.nextDirection=direction;
+	}
+
+
 
 	getDirection(direction){
 		return this.direction;
@@ -93,7 +130,7 @@ class Tank{
 		return this.imageInUse;
 	}
 
-	increaseLife(value){
+	increaseLife(value) {
 		this.life=value;
 	}
 

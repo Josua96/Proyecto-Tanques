@@ -4,6 +4,7 @@ const Event = require('../GameQueueManager/Event.js');
 const Board = require('./Board.js');
 const eventKeys= require('../../EventKeys.js');
 const Tank= require ('../GameElements/Tank.js');
+const EnemiesMovementManager = require ('./EnemiesMovementManager.js');
 const Data = require ('../../Data.js');
 const BoardPosition = require ('../BoardPosition.js');
 
@@ -11,12 +12,15 @@ const BoardPosition = require ('../BoardPosition.js');
 class Game{
 
     constructor(id,width, height,wallsNumber,enemiesNumber,powerAppearInterval,
-                tanksAppearInterval,tanksShootInterval,tanksMovementInterval,powerCheckingTime){
+                tanksAppearInterval,tanksShootInterval,tanksMovementInterval,powerCheckingTime,bulletDamage){
 		
 		/****************************
 		General information
         *****************************/
         this.gameId=id;
+
+        this.bulletDamage= bulletDamage;
+
         this.powerAppearInterval= powerAppearInterval;
         this.tanksAppearInterval= tanksAppearInterval;
         this.tanksShootInterval= tanksShootInterval;
@@ -24,6 +28,7 @@ class Game{
         this.width= width;
         this.height= height; 
 
+        this.endGame=false;
         this.gameStarting=true;
         //para elminar de un diccionario delete thisIsObject["Cow"];
 
@@ -31,8 +36,9 @@ class Game{
          Game component instantiation
         ********************************/
         this.boardController= new Board(this.width,this.height,wallsNumber,enemiesNumber);
-        this.eventHandler = new EventManager(this.boardController.getGameBoard(),eventKeys,300,powerCheckingTime);
+        this.eventHandler = new EventManager(this.boardController,eventKeys,300,powerCheckingTime);
         this.boardController.setWallsAndEnemies(wallsNumber,enemiesNumber,this.eventHandler.getEnemies());
+        this.enemiesMovementCalculator = new EnemiesMovementManager(this.eventHandler.getPlayers());
         
     }
 
@@ -52,20 +58,52 @@ class Game{
         return this.boardController.getGameBoard();
     }
 
-    bulletMovement(){
+    bulletMovement(bullet,bulletSpeed){
+        var intervalo = setInterval(() => {
+            
+            
+            }, bulletSpeed); 
 
     }
 
-    enemyShoot(){
-
+    enemyShoot(tank){
+        var intervalo = setInterval(() => {
+            
+            
+            }, this.tanksShootInterval); 
     }
 
-    enemyMovement(){
-
+    enemyMovement(tank){
+        var intervalo = setInterval(() => {
+            
+            if (tank.getIsEnable()){
+                
+            }
+            
+            } , this.tanksMovementInterval); 
     }
 
-    enemyGeneration(eventHandler,boardController){
-        
+    canGenerateEnemy(){
+        var playerQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.players);
+        var enemiesQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.enemies);
+        return playerQuantity === enemiesQuantity;
+    }
+
+    enemyGeneration(){
+        var intervalo = setInterval(() => {
+            
+            if(this.endGame){
+                clearInterval(intervalo);
+            }
+
+            if ( this.canGenerateEnemy()){
+                var tank = new Tank(-1,-1,Data.machineTank,this.bulletDamage,0,0,"","","","","");
+                this.eventHandler.insertInDict(this.eventHandler.getEnemies(),tank,false);
+                this.eventHandler.addEvent(new Event(eventKeys.appearTank,tank));
+            }
+
+            
+            }, this.tanksAppearInterval); 
     }
 
     initGame(){
@@ -81,9 +119,10 @@ class Game{
     }
 
     createTankForPlayers(playerID){
-        tank= new Tank(Data.player,playerID,Data.playerTank,20,
+        tank= new Tank(playerID,playerID,Data.playerTank,20,
             0,0,"","","","","");
-        this.eventHandler.insertInDict(this.eventHandler.getPlayers(),new BoardPosition(Data.player,tank,-1));
+        this.eventHandler.insertInDict( this.eventHandler.getPlayers(),new Tank(playerID,playerID,Data.playerTank,
+                this.bulletDamage,0,0,"","","","",""),true);
         return tank;
     }
 

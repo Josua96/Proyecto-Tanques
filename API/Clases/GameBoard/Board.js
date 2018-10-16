@@ -91,7 +91,9 @@ class Board{
         return true;
     }
 
-    setNewPlayer(playerObject){
+
+
+    setNewTank(tankObject){
         var inGame=false;
         var x;
         var y;

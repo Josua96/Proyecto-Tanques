@@ -85,6 +85,20 @@ io.on('connection', (socket) => {
 
 });
 
+var c=3;
+
+function tAp(){
+    console.log(c);
+}
+
+function nada(){
+    var emitServerMessage = setInterval(() => {
+ 
+        tAp();
+        
+        }, 200);
+}
+
 function tankAppear(){
     var control=60;
     var emitServerMessage = setInterval(() => {
@@ -140,11 +154,51 @@ function otherProcessing(){
 
 //tankAppear();
 console.log("no esperé a que terminara generación de tanque");
-powerAppear(20,"appear 1");
-powerAppear(30,"appear2")
+//powerAppear(20,"appear 1");
+//powerAppear(30,"appear2")
+
+
+
 console.log("no esperé a que terminara generación de poder");
 //otherProcessing();
 
+/*
+class algo{
 
+    constructor(){
 
+        this.mensaje="prueba";
+        this.lista=[1,2,3,4];
+        this.otraPrueba="hola";
+        this.intervalo=200;
 
+    }
+
+    imprimir(algo){
+        console.log(algo);
+    }
+
+    tAp(){
+
+        console.log("conozco mensaje: "+ this.mensaje);
+        console.log("conozco lista: "+ this.lista);
+        console.log("conozco: "+ this.otraPrueba);
+        
+    }
+
+    nada(){
+        var emitServerMessage = setInterval(() => {
+            console.log("entrando");
+            this.tAp();
+            
+            }, this.intervalo);
+    }
+
+}
+
+var objeto= new algo();
+console.log("imprimir mensaje "+ objeto.mensaje);
+console.log("imprimir lista "+ objeto.lista);
+console.log("imprimir oP "+ objeto.otraPrueba);
+objeto.nada();
+*/

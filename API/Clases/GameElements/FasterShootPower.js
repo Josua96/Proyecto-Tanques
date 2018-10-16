@@ -7,6 +7,11 @@ class FasterShootPower extends Power {
         this.applyPower(velocity);
     }
 
+    setPowerToActive(){
+
+        this.applyPower(this.velocity);
+    }
+
     applyPower(velocity){
         
         if(this.tank!= undefined){
@@ -18,7 +23,8 @@ class FasterShootPower extends Power {
                     this.tank.setBulletSpeed (this.tank.getBulletSpeed() - velocity);
                 }
                 this.active=false;
-              }, this.time)
+                this.activeTime=0;
+              }, this.activeTime)
         }
     }
 }
