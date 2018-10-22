@@ -13,6 +13,49 @@ export class GameController {
     private boardDrawer; 
     private inGame:boolean = true; 
 
+    /**
+     * @summary crea los bordes del tablero. 
+     */
+    createEdges()
+    {         
+        var imag  = new Image(); 
+        imag.src = "../../assets/Images/estructures/pared.png";
+        imag.onload
+        { console.log("SE llamo"); 
+            var i=0;
+            for(i=0; i<24; i++)
+            {
+                this.boardDrawer.drawImage(imag, i*30,0); 
+                this.boardDrawer.drawImage(imag, i*30,690);                                                            
+            }           
+            for(i=1; i<23; i++)
+            {           
+                this.boardDrawer.drawImage(imag,0, i*30);          
+                this.boardDrawer.drawImage(imag,690, i*30);               
+            }           
+        }
+                                
+    }
+
+    /**
+     * @summary Permite inicializar el tablero para que el jugador inicie. 
+     */
+    initialize()
+    {
+        this.updateBoard();   
+        this.createEdges();        
+    }
+    
+   /**
+   * @summary Esta funcion pinta los objetos animados en patalla.       
+   */
+    updateBoard()
+    {     
+        this.animatedObjects.forEach(element => {            
+            var position = element.getPosition(); 
+            this.boardDrawer.drawImage(element.getImage(), position.x, position.y);         
+        });
+    }    
 
     /**
      * 
@@ -25,45 +68,8 @@ export class GameController {
         this.animatedObjects = animatedObjects; 
         this.eventListener = eventListener;         
         this.boardDrawer = canvas.getContext('2d'); 
+
     }
     
-    initialize()
-    {
-        this.createEdges(); 
-        this.updateBoard();           
-    }
 
-    
-    /**
-     * @summary crea los bordes del tablero. 
-     */
-    createEdges()
-    {  
-    
-        var imag  = new Image(); 
-        imag.src = "../../assets/Images/estructures/pared.png";
-
-        var i=0;
-        for(i=0; i<24; i++)
-        {
-            this.boardDrawer.drawImage(imag, i*30,0); 
-            this.boardDrawer.drawImage(imag, i*30,690);                                                            
-        }           
-        for(i=1; i<23; i++)
-        {           
-            this.boardDrawer.drawImage(imag,0, i*30);          
-            this.boardDrawer.drawImage(imag,690, i*30);               
-        }                             
-    }
-
-   /**
-   * @summary Esta funcion pinta los objetos animados en patalla.       
-   */
-    updateBoard()
-    {     
-        this.animatedObjects.forEach(element => {
-            var position = element.getPosition(); 
-            this.boardDrawer.drawImage(element.getImage(), position.x, position.y);         
-        });
-    }    
 }
