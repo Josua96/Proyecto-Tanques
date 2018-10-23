@@ -4,7 +4,15 @@ class LifeEnhancePower extends Power {
 
     constructor(image,tank,time,active,lifeValue){
         super(image,tank,time,active);
+        this.lifeValue= lifeValue;
     
+    }
+
+    
+    setPowerToActive(){
+
+        this.applyPower(this.lifeValue);
+
     }
 
     applyPower(lifeValue){
@@ -13,6 +21,7 @@ class LifeEnhancePower extends Power {
         }
 
         this.active=false;
+        this.activeTime=0;
     }
 }
 

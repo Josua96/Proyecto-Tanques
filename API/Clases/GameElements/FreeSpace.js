@@ -1,4 +1,4 @@
-class FreeSpace(){
+class FreeSpace{
 	
 	constructor(image){
 
@@ -8,7 +8,7 @@ class FreeSpace(){
 	getImage(){
 
 		return this.image;	
-}
+	}
 
 }
 

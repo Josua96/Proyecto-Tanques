@@ -5,16 +5,18 @@ const WhiteSpace = require('../GameElements/FreeSpace.js');
 
 class EventsManager{
 
-	constructor(gameBoard,eventKeys,processingTime, powerCheckingTime){
+	constructor(gameBoard,eventKeys,processingTime, powerCheckingTime,endGame){
+
+        this.endGame=endGame;
 
         this.gameBoard=gameBoard;
+
         this.eventsKeys=eventKeys;
 
         //every player and enemy is represented like a dictionary  {"id": object}
         this.enemies={};
         this.players={};
         this.inUse=false;
-
         this.eagleWasKilled=false;
 
         /****** QUEUES ******/
@@ -33,9 +35,11 @@ class EventsManager{
         return this.enemies;
     }
 
-    insertInDict(dic,newObject){
-
-        newObject.id=Object.keys(dic).length;
+    insertInDict(dic,newObject,isPlayer){
+        if (!isPlayer){
+            newObject.id=Object.keys(dic).length;
+        }
+        
         dic[newObject.id]=newObject;
         
     }
@@ -57,7 +61,7 @@ class EventsManager{
             var i;
 
             for(i=0; i < this.activePowers.length; i++){
-                if (!this.activePowers[i].isActive){
+                if (!this.activePowers[i].destroy()){
                     this.activePowers.splice(i,1);
                 }
             }
@@ -80,7 +84,7 @@ class EventsManager{
                    gameBoard.getPosition(event.object.x,event.object.y).object.decreaseLife(event.object.damage); 
                 }
             }
-            if else(gameBoard.getPosition(event.object.x,event.object.y).id == Data.wall){
+            else if (gameBoard.getPosition(event.object.x,event.object.y).id == Data.wall){
                 if(gameBoard.getPosition(event.object.x,event.object.y).object.destroy()){
                     gameBoard.setPosition(event.object.x,event.object.y,WhiteSpace("imagen"));
                 }
@@ -88,7 +92,7 @@ class EventsManager{
                    gameBoard.getPosition(event.object.x,event.object.y).object.decreaseLife(event.object.damage); 
                 }
             }
-            if else(gameBoard.getPosition(event.object.x,event.object.y).id == Data.enemy){
+            else if (gameBoard.getPosition(event.object.x,event.object.y).id == Data.enemy){
                 if(event.object.type == Data.playerTank){
                     if(gameBoard.getPosition(event.object.x,event.object.y).object.destroy()){
                     this.enemies.remove(gameBoard.getPosition(event.object.x,event.object.y).id);
@@ -99,7 +103,7 @@ class EventsManager{
                     }
                 }
             }
-            if else(gameBoard.getPosition(event.object.x,event.object.y).id == Data.player){
+            else if(gameBoard.getPosition(event.object.x,event.object.y).id == Data.player){
                 if(event.object.type == Data.machineTank){
                     if(gameBoard.getPosition(event.object.x,event.object.y).object.destroy()){
                     this.player.remove(gameBoard.getPosition(event.object.x,event.object.y).id);
@@ -110,7 +114,7 @@ class EventsManager{
                     }
                 }
             }
-            if else(gameBoard.getPosition(event.object.x,event.object.y).id == Data.bullet){
+            else if (gameBoard.getPosition(event.object.x,event.object.y).id == Data.bullet){
                 gameBoard.getPosition(event.object.x,event.object.y).setIsEnable(false);
                 event.object.setIsEnable(false);
                 gameBoard.setPosition(event.object.x,event.object.y,WhiteSpace("imagen"));
@@ -163,30 +167,32 @@ class EventsManager{
                 showTank(event);
                 this.inUse=true;
             }
-            if else(event==1){
+            else if (event==1){
                 showBullet(event);
                 this.inUse=true;
             }
-            if else(event==2){
+            else if (event==2){
                 showPower(event);
                 this.inUse=true;
             }
-            if else(event==3){
+            else if (event==3){
                 if(event.object != undefined && event.object.playerId!=-1){
                     movePlayersTank(event);
                     this.inUse=true;
                 }
-                if else(event.object != undefined){
+                else if (event.object != undefined){
                     moveEnemiesTanks(event);
                     this.inUse=true;
                 }
             }
-            if else(event==4 && event.objet.getIsEnable()){
+            else if(event==4 && event.objet.getIsEnable()){
                 shoot(event);
             }
-            if else(){
+            /*
+            else if(){
                 applyPower(event);
             }
+            */
         }
         else{
             console.log("estoy ocupado");
@@ -208,7 +214,7 @@ class EventsManager{
 
         }
 
-    }
+    
 
     addEvent(event){
         if(event.type ==1 || event.type==4){

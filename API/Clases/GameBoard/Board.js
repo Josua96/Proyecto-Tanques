@@ -99,11 +99,13 @@ class Board{
         return true;
     }
 
+
     getPosition(x,y){
         return this.gameBoard[x][y];
     }
 
     setNewTank(tankObject,iWidth,fWidth){
+        
         var inGame=false;
         var x;
         var y;

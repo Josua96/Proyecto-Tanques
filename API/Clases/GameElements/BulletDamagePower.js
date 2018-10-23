@@ -4,6 +4,13 @@ class BulletDamagePower extends Power {
 
     constructor(image,tank,time,active,damage){
         super(image,tank,time,active);
+        this.damage=damage;
+
+    }
+
+    setPowerToActive(){
+        this.applyPower(this.damage);
+
     }
 
     applyPower(damage){
@@ -17,7 +24,8 @@ class BulletDamagePower extends Power {
                     this.tank.setBulletDamage(this.tank.getBulletDamage() - damage);
                 }
                 this.active=false;
-              }, this.time)
+                this.activeTime=0;
+              }, this.activeTime)
         }
     }
 }

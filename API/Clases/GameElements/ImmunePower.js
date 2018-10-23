@@ -6,6 +6,12 @@ class ImmunePower extends Power {
 
     constructor(image,tank,time,active){
         super(image,tank,time,active);
+        
+    }
+
+    setPowerToActive(){
+
+        this.applyPower();
     }
 
     applyPower(){
@@ -17,7 +23,9 @@ class ImmunePower extends Power {
                     this.tank.setIsImmune(false);
                 }
                 this.active=false;
-            }, this.time)
+                this.activeTime=0;
+                
+            }, this.activeTime)
         }
         
     }
