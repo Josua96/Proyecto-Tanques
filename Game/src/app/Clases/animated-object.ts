@@ -10,7 +10,7 @@ export class AnimatedObject extends Gameobject
      * @param position Posicion actual del objeto. 
      */
 
-    constructor(imageDefault:ImageBitmap, images, position:any)
+    constructor(imageDefault:HTMLImageElement, images, position:any)
     {
         super(imageDefault, position); 
         this.images = images;     
