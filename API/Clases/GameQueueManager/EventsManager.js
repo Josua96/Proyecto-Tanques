@@ -68,16 +68,76 @@ class EventsManager{
         }
     }
 
-    moveEnemiesTanks(){}
-    movePlayersTank(){}
+    calculateNextPosition(x,y){
+        var x = x;
+        var y = y;
+        if(event.object.getNextDirection() == Data.left){
+            x = x - 1;
+        }
+        else if(event.object.getNextDirection() == Data.right){
+            x = x + 1;
+        }
+        else if(event.object.getNextDirection() == Data.up){
+            y = y + 1;
+        }
+        else if(event.object.getNextDirection() == Data.down){
+            y = y - 1;
+        }
+        return [x, y];
+    }
+
+    moveEnemiesTanks(event){
+
+        var nextPosition = calculateNextPosition(event.object.x, event.object.y);
+
+        if(nextPosition[0] > 0 && nextPosition[0] < gameBoard.getWidth() || nextPosition[1] > 0 && nextPosition[1] < gameBoard.getHeight())
+        {
+            if(gameBoard.getPosition(nextPosition[0],nextPosition[1]) == Data.free){
+                event.object.x = nextPosition[0];
+                event.object.y = nextPosition[1];
+            }
+            else if(gameBoard.getPosition(nextPosition[0],nextPosition[1]) == Data.power){
+                gameBoard.getPosition(nextPosition[0],nextPosition[1]).setTank(event.object);
+                event.object.setPower(gameBoard.getPosition(nextPosition[0],nextPosition[1]));
+                event.object.applyPower();
+            }
+            else if(gameBoard.getPosition(nextPosition[0],nextPosition[1]) == Data.wall){
+                if(event.object.getCanCrossObstacles()){
+                    moveEnemiesTanks(event);
+                }          
+            }
+        }
+    }
+
+    movePlayersTank(event){
+        var nextPosition = calculateNextPosition(event.object.x, event.object.y);
+
+        if(nextPosition[0] > 0 && nextPosition[0] < gameBoard.getWidth() || nextPosition[1] > 0 && nextPosition[1] < gameBoard.getHeight())
+        {
+            if(gameBoard.getPosition(nextPosition[0],nextPosition[1]) == Data.free){
+                event.object.x = nextPosition[0];
+                event.object.y = nextPosition[1];
+            }
+            else if(gameBoard.getPosition(nextPosition[0],nextPosition[1]) == Data.power){
+                gameBoard.getPosition(nextPosition[0],nextPosition[1]).setTank(event.object);
+                event.object.setPower(gameBoard.getPosition(nextPosition[0],nextPosition[1]));
+            }
+            else if(gameBoard.getPosition(nextPosition[0],nextPosition[1]) == Data.wall){
+                if(event.object.getCanCrossObstacles()){
+                    moveEnemiesTanks(event);
+                }          
+            }
+        }
+    }
 
     shoot(event){
         event.object.moveBullet();
-        if(event.object.x > 0 &&event.object.x < gameBoard.getWidth() || event.object.y > 0 && event.object.y < gameBoard.getHeight())
+        if(event.object.x > 0 && event.object.x < gameBoard.getWidth() || event.object.y > 0 && event.object.y < gameBoard.getHeight())
         {
             if(gameBoard.getPosition(event.object.x,event.object.y).id == Data.eagle){
                 if(gameBoard.getPosition(event.object.x,event.object.y).object.destroy()){
                     eagleWasKilled = true;
+                    endGame=true;
                     gameBoard.setPosition(event.object.x,event.object.y,WhiteSpace("imagen"));
                 }
                 else{
@@ -94,20 +154,22 @@ class EventsManager{
             }
             else if (gameBoard.getPosition(event.object.x,event.object.y).id == Data.enemy){
                 if(event.object.type == Data.playerTank){
-                    if(gameBoard.getPosition(event.object.x,event.object.y).object.destroy()){
-                    this.enemies.remove(gameBoard.getPosition(event.object.x,event.object.y).id);
-                    gameBoard.setPosition(event.object.x,event.object.y,WhiteSpace("imagen"));
+                    if(gameBoard.getPosition(event.object.x,event.object.y).object.destroy())
+                    {
+                        this.enemies.remove(gameBoard.getPosition(event.object.x,event.object.y).id);
+                        gameBoard.setPosition(event.object.x,event.object.y,WhiteSpace("imagen"));
                     }
-                    else{
+                    else {
                        gameBoard.getPosition(event.object.x,event.object.y).object.decreaseLife(event.object.damage); 
                     }
                 }
             }
             else if(gameBoard.getPosition(event.object.x,event.object.y).id == Data.player){
                 if(event.object.type == Data.machineTank){
-                    if(gameBoard.getPosition(event.object.x,event.object.y).object.destroy()){
-                    this.player.remove(gameBoard.getPosition(event.object.x,event.object.y).id);
-                    gameBoard.setPosition(event.object.x,event.object.y,WhiteSpace("imagen"));
+                    if(gameBoard.getPosition(event.object.x,event.object.y).object.destroy())
+                    {
+                        this.player.remove(gameBoard.getPosition(event.object.x,event.object.y).id);
+                        gameBoard.setPosition(event.object.x,event.object.y,WhiteSpace("imagen"));
                     }
                     else{
                        gameBoard.getPosition(event.object.x,event.object.y).object.decreaseLife(event.object.damage); 
@@ -120,10 +182,15 @@ class EventsManager{
                 gameBoard.setPosition(event.object.x,event.object.y,WhiteSpace("imagen"));
             }           
         }
+        else{
+            event.object.setIsEnable(false);   
+        }
     }
 
 
-    applyPower(){}
+    applyTankPower(event){
+        event.object.applyPower();
+    }
 
     showBullet(event){
         gameBoard.setPosition(event.object.x,event.object.y,event.object);
@@ -162,20 +229,21 @@ class EventsManager{
     proccessEvents(){
 
         if (!this.inUse){
+
             event = this.eventsQueue.shift();
-            if(event==0){
+            if(event.getType()==0){
                 showTank(event);
                 this.inUse=true;
             }
-            else if (event==1){
+            else if (event.getType()==1){
                 showBullet(event);
                 this.inUse=true;
             }
-            else if (event==2){
+            else if (event.getType()==2){
                 showPower(event);
                 this.inUse=true;
             }
-            else if (event==3){
+            else if (event.getType()==3){
                 if(event.object != undefined && event.object.playerId!=-1){
                     movePlayersTank(event);
                     this.inUse=true;
@@ -185,14 +253,14 @@ class EventsManager{
                     this.inUse=true;
                 }
             }
-            else if(event==4 && event.objet.getIsEnable()){
+            else if(event.getType()==4 && event.objet.getIsEnable()){
                 shoot(event);
+                this.inUse=true;
             }
-            /*
-            else if(){
-                applyPower(event);
+            else if(event.getType()==5){
+                applyTankPower(event);
+                this.inUse=true; 
             }
-            */
         }
         else{
             console.log("estoy ocupado");

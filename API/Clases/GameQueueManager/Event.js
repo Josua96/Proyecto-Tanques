@@ -1,6 +1,6 @@
 class Event{
 
-	constructor(type,object){
+	constructor(type, object){
         this.type= type;
         this.object= object;
         this.state= waiting;

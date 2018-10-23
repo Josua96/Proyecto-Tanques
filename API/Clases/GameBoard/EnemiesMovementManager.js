@@ -14,14 +14,12 @@ class EnemiesMovemet{
             return -1;  //dirección inválida representa movimiento no posible
         }
 
-        var movement= this.getValidMovement(tank,width,height,destiny[0],destiny[y]);
+        var movement = this.getValidMovement(tank,width,height,destiny[0],destiny[y]);
         if (movement.length===0){
             return -1;
         }
 
         return movement[2]; //retornar la dirección donde debe moverse
-
-
     }
 
 
