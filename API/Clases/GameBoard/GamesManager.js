@@ -22,12 +22,12 @@ class GamesManager{
     }
 
 
-    data={board:valor, canPaint:boolean, playerDead:boolean, gameFinished:boolean, boardWidth:valor, boardHeight:valor, tankImage:valor}
+   
 
     getDataForPlayer(gameId,playerId){
         var dic= {};
         dic["board"]= this.getGameBoard(gameId);
-        dic["canPaint"]= t
+        dic["canPaint"]=4;
 
     }
 
@@ -42,6 +42,8 @@ class GamesManager{
         else{
             var tank=this.games[gameId].createTankForPlayers(playerId);
             return gameId;
+    }
+    
     }
 
     getPlayerTank(playerId){

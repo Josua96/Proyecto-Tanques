@@ -279,8 +279,5 @@ class Game{
 
     }
 
-    get
-
-
 }
 module.exports= Game;
