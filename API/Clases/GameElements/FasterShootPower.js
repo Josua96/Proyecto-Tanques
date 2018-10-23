@@ -4,7 +4,7 @@ class FasterShootPower extends Power {
 
     constructor(image,tank,time,active,velocity){
         super(image,tank,time,active);
-        this.applyPower(velocity);
+        this.velocity=velocity;
     }
 
     setPowerToActive(){
@@ -16,7 +16,7 @@ class FasterShootPower extends Power {
         
         if(this.tank!= undefined){
 
-            this.tank.setBulletSpeed(this.tank.getBulletSpeed() + velocity);
+            this.tank.setBulletSpeed(this.tank.getBulletSpeed() - velocity);
             setTimeout(function () {
 
                 if (this.tank!= undefined){

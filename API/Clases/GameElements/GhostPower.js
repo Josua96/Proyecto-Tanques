@@ -6,7 +6,7 @@ class GhostPower extends Power {
     constructor(image,tank,time,active){
         super(image,tank,time,active);
     }
-
+    
     setPowerToActive(){
 
         this.applyPower();

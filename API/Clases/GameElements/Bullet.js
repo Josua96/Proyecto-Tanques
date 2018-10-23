@@ -1,6 +1,8 @@
+const Data = require ('../../Data.js');
+
 class Bullet{
 
-	constructor(id,image,type,damage,speed,direction,x,y){
+	constructor(id,image,type,damage,speed,direction,x,y,isEnable){
 		
 		/****************************
 		General information
@@ -20,11 +22,26 @@ class Bullet{
         this.direction= direction;
         this.x=x;
         this.y=y;
+        this.isEnable=true;
+        this.endMovement=false;
 	
     }
 
+    setEndMovement(value){
+        this.endMovement=true;
+    }
+
+    getEndMovement(){
+        return this.endMovement;
+    }
+    
+
     getIsEnable(){
         return this.isEnable;
+    }
+
+    getSpeed(){
+        return this.speed;
     }
 
     setIsEnable(value){
@@ -47,15 +64,56 @@ class Bullet{
         return this.damage;
     }
 
-    moveBullet(){
 
-    }
 
+    //determinar la dirección donde la bala tiene que aparecer con respecto al tanque
     setDirection(tank){
+        this.direction=tank.getDirection();;
+        if (this.direction === Data.left){
+            this.x=tank.x;
+            this.y= tank.y-1;
+
+        }
+        else if (this.direction === Data.up){
+            this.x=tank.x-1;
+            this.y= tank.y;
+        }
+        else if (this.direction === Data.right){
+            this.x=tank.x;
+            this.y= tank.y+1;
+
+        }
+        //hacia abajo
+        else{
+            this.x=tank.x+1;
+            this.y= tank.y;
+        }
 
     }
 
-    
+    getIsEnable(){
+        return this.isEnable;
+    }
+
+    setIsEnable(value){
+        this.isEnable = value;
+    }
+
+    moveBullet(){
+        if(this.direction==0){
+            this.x = this.x-1;
+        }
+        else if (this.direction==1){
+            this.y = this.y+1;
+        }
+        else if(this.direction==2){
+            this.x=this.x+1;
+        }
+        else{
+            this.y=this.y-1;
+        }
+    }
+
 
 
 }
