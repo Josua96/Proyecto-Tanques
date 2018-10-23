@@ -34,10 +34,7 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 		console.log(event.code);
 		//alert(JSON.stringify(this.inputHandler.getAction(event.keyCode)));
 	}
-
-
-
-
+	
 	constructor(private dataExchangerController: ConnectioncontrollerService) {
 		this.tankImagePath = "../../assets/Images/Tanks/red/up.png";
 		this.userName = localStorage.getItem("userName");
