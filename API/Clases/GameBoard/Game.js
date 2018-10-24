@@ -193,7 +193,7 @@ class Game{
             }, this.tanksAppearInterval); 
     }
 
-    enemyMovement(tank){
+    checkEndGame(){
         var intervalo = setInterval(() => {
             
             if (this.endGame===true){
