@@ -31,4 +31,4 @@ class ImmunePower extends Power {
     }
 }
 
-module.exports = ImmunePower();
+module.exports = ImmunePower;

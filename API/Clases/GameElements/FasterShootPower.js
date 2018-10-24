@@ -29,4 +29,4 @@ class FasterShootPower extends Power {
     }
 }
 
-module.exports = FasterShootPower();
+module.exports = FasterShootPower;

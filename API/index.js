@@ -1,8 +1,16 @@
 
 
+
+
 var express = require('express');
 var app = express();
 var timeForEmit= 500;
+
+const GameManager= require('./Clases/GameBoard/GamesManager.js');
+
+
+var gamesManager= new GameManager();
+var usersCount=0;
 
 app.use(function(req, res, next) 
 {
@@ -36,14 +44,20 @@ var io = require('socket.io')(webService);
 io.on('connection', (socket) => {
 
     var userConnected= true;
+    var userID= usersCount;
+    usersCount++
+    console.log("user number:" + userID+ " connected");
 
-    var emitGameState = function(){ 
+
+    var emitGameState = function(gameId, userCanPlay){ 
         var emitServerMessage = setInterval(() => {
         if (!userConnected){
             clearInterval(emitServerMessage);
         }
         else{
-            socket.emit('gameState', {type:'new-message', text: "prueba intervalo"});
+            console.log("gameID:" + gameId);
+            var data= gamesManager.getDataForPlayer(gameId,userID,userCanPlay);
+            socket.emit('gameState', data);
         }
         
         }, timeForEmit);
@@ -57,13 +71,20 @@ io.on('connection', (socket) => {
     socket.on('disconnect', function(){
         console.log('user disconnected');
         userConnected= false;
+        usersCount--;
     });
     
     //user invoke this when want to play
     socket.on('joinGame', (data) => {
         console.log("user join to game");
         console.log(data);
-        emitGameState();
+        var gameId = gamesManager.joinPlayerToGame(-1,userID);
+        var userCanPlay=true;
+        if (gameId===-1){
+           userCanPlay=false;
+        }
+
+        emitGameState(gameId,userCanPlay);
 
     });
 
@@ -81,6 +102,13 @@ io.on('connection', (socket) => {
         console.log(data);
         //add http request to queue  
     });
+
+    socket.on('move', (data) => {
+        console.log("user move to some side");
+        console.log(data);
+        //add http request to queue  
+    });
+
 
 
 });

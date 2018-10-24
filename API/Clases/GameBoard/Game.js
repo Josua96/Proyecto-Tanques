@@ -7,11 +7,11 @@ const Tank= require ('../GameElements/Tank.js');
 
 const Power = require ('../GameElements/Power.js');
 const Bullet= require ('../GameElements/Bullet.js');
-const BulletDamagePower = require ('../GameElements/BulletDamagePower.js');
+const BulletDamagePower = require('../GameElements/BulletDamagePower.js');
 const FasterShootPower = require ('../GameElements/FasterShootPower.js');
 const GhostPower = require ('../GameElements/GhostPower.js');
 const ImmunePower= require ('../GameElements/ImmunePower.js');
-const LifeEnhancePower = require ('../GameElements/LifeEnhancePower.js');
+const LifeEnhancePower = require ("../GameElements/LifeEnhancerPower.js");
 
 const EnemiesMovementManager = require ('./EnemiesMovementManager.js');
 const Data = require ('../../Data.js');
@@ -30,7 +30,7 @@ class Game{
 
         this.bulletDamage= bulletDamage;
         this.usersQuantity=0;
-
+        this.gameFactor=30;
 
         this.powerAppearInterval= powerAppearInterval;
         this.tanksAppearInterval= tanksAppearInterval;
@@ -47,7 +47,8 @@ class Game{
         /*******************************
          Game component instantiation
         ********************************/
-        this.boardController= new Board(this.width,this.height,wallsNumber,enemiesNumber);
+       
+        this.boardController= new Board(this.width/30,this.height/30,wallsNumber,enemiesNumber);
         this.eventHandler = new EventManager(this.boardController,eventKeys,300,powerCheckingTime,this.endGame);
         this.boardController.setWallsAndEnemies(wallsNumber,enemiesNumber,this.eventHandler.getEnemies());
         this.enemiesMovementCalculator = new EnemiesMovementManager(this.eventHandler.getPlayers());
@@ -62,7 +63,11 @@ class Game{
         this.usersQuantity= value;
     }
 
-    startGame(playerTank){
+    getEndGame(){
+        return this.endGame;
+    }
+
+    startGame(){
 
         if (this.gameStarting){
             this.gameStarting= false;
@@ -70,7 +75,6 @@ class Game{
             this.initGame();
         }
 
-        //aparecer el tanque del jugador
     }
 
     getGameBoard(){
@@ -109,8 +113,8 @@ class Game{
             }, this.tanksShootInterval); 
     }
 
-    //HAY DOS DE ESTOS, CUAL ES???????????????????????????
-    enemyMovement(tank){
+
+    checkEndGame(){
         var intervalo = setInterval(() => {
             
             if (tank.destroy()){
@@ -169,6 +173,7 @@ class Game{
         var enemiesQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.enemies);
         return playerQuantity === enemiesQuantity;
     }
+
 
     enemyGeneration(){
 
@@ -252,21 +257,23 @@ class Game{
     }
 
     createTankForPlayers(playerID){
-        tank= new Tank(playerID,playerID,Data.playerTank,20,
-            0,0,"","","","","");
-        this.eventHandler.insertInDict( this.eventHandler.getPlayers(),new Tank(playerID,playerID,Data.playerTank,
-                this.bulletDamage,0,0,"","","","",""),true);
+        var tank= new Tank(playerID,playerID,Data.playerTank,this.bulletDamage,0,0,"","","","","");
+        this.eventHandler.insertInDict( this.eventHandler.getPlayers(),tank,true);
         this.createObjectEvent(eventKeys.appearTank,tank);
         return tank;
     }
 
     getPlayerTank(playerID){
-        this.eventHandler.getPlayers()[playerID];
+
+        return this.eventHandler.getPlayers()[playerID.toString()];
     }
 
     playerDead(playerID){
-        var tank= this.getPlayerTank(data.playerID);
         
+        var tank= this.getPlayerTank(playerID);
+        
+        console.log("tanque del jugador");
+        console.log(tank);
         if (tank===undefined){
             return true;
         }

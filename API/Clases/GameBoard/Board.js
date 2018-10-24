@@ -19,7 +19,10 @@ class Board{
         this.width= width;
         this.height= height;
 
-        this.gameBoard= new Array(width);
+        this.gameBoard= new Array(this.width);
+        console.log("solo columnas");
+        console.log(this.gameBoard);
+
         this.initBoard();
 
 	
@@ -39,15 +42,14 @@ class Board{
 
 
     initBoard(){
-    	var i;
-    	var j;
-    	
-    	for(i=0; i <this.witdh; i++){
-
-    		this.gameBoard[i] = new Array(this.height);
-
-    		for(j=0; j< this.height; j++){
-    			
+ 
+        
+    	for (var i=0; i < this.width; i++){
+            
+            this.gameBoard[i] = new Array(this.height);
+           
+    		for(var j=0; j< this.height; j++){
+                
                 this.gameBoard[i][j]= new BoardPosition(Data.free,new FreeSpace("image"),-1);
     			
     		}
@@ -57,6 +59,9 @@ class Board{
         //set eagle 
         var i=Math.round(this.width/2);
         this.setPosition(i,0,new BoardPosition(Data.eagle,new Generic("",100,i,0),-1));
+
+        console.log("tablero inicializado");
+        console.log(this.gameBoard[0][0]);
 
     }
 
@@ -95,7 +100,9 @@ class Board{
     }
 
     setPosition(x,y,newObject){
-        this.gameBoard[x][y]= newObject;
+        console.log("tablero");
+        console.log(this.gameBoard);
+        this.gameBoard[x][y] = newObject;
         return true;
     }
 

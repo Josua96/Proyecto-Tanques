@@ -28,4 +28,4 @@ class GhostPower extends Power {
     }
 }
 
-module.exports = GhostPower();
+module.exports = GhostPower;

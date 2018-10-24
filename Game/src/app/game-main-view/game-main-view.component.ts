@@ -26,6 +26,7 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 	private tankImagePath: string;
 	private inputHandler: InputHandler;
 	private gameCtrl: GameController;
+	private userJoinToGame=false;
 
 	@ViewChild('canvas') canvas: ElementRef;
 	@HostListener('window:keydown', ['$event']) 
@@ -42,22 +43,33 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit() {
-		/*this.dataExchangerController.messageObserver.subscribe(msg => {
-		console.log("web service emitió un mensaje");
-		console.log(msg);
-		});*/
-		console.log("Inicializando.... ");
+		this.dataExchangerController.messageObserver.subscribe(msg => {
+		
+			console.log("web service emitió un mensaje");
+			console.log(msg);
+		
+		});
+
+		
+		
 	}
 
 	ngAfterViewInit() { 
+
+
+		if (!this.userJoinToGame){
+			this.sendMessage("joinGame",{"Data": "User want to play"});
+			this.userJoinToGame=true;
+		}
 		// Hacer la conexion al servidor para que nos tire los datos que se necesitan.   
 
-		/** funcion de prueba */
+		
 		var names = ["gray", "red", "green", "blue", "rose", "white"];     
 		var dirs = ["up", "left", "down", "right"]; 
 		var objects = [];
 		var i = 0; 
 		var j = 0; 
+		/*
 		for(i=0;i<6; i++)
 		{
 			for(j=0;j<4; j++)
@@ -71,7 +83,10 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 
 			}
 		}	
-		this.gameCtrl = new GameController(this.canvas.nativeElement,objects, this.inputHandler);       
+		*/
+		this.gameCtrl = new GameController(this.canvas.nativeElement,objects, this.inputHandler);   
+		
+		
 	}
 
 	send() {

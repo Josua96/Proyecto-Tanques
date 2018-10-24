@@ -21,6 +21,10 @@ class Power{
     destroy(){
         return this.activeTime===0;
     }
+
+    getImage(){
+        return this.image;
+    }
     
 
 }

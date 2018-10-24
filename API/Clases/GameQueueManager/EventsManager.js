@@ -37,7 +37,10 @@ class EventsManager{
 
     insertInDict(dic,newObject,isPlayer){
         if (!isPlayer){
-            newObject.id=Object.keys(dic).length;
+            console.log("id: "+Object.keys(dic).length);
+            console.log("id parseada: "+ parseInt(Object.keys(dic).length));
+
+            newObject.id = Object.keys(dic).length.toString();
         }
         
         dic[newObject.id]=newObject;

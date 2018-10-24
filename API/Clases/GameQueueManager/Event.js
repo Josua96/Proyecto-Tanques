@@ -3,7 +3,7 @@ class Event{
 	constructor(type, object){
         this.type= type;
         this.object= object;
-        this.state= waiting;
+        this.state= true;
     }
 
     getType(){

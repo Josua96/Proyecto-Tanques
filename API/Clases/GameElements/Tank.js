@@ -27,7 +27,7 @@ class Tank{
 		this.nextDirection=-1;
 
 		this.imagesNames=[leftImage,upImage,rightImage, downImage,bulletImage];
-		this.imageInUse=imagesNames[0];
+		this.imageInUse=this.imagesNames[0];
 		this.bulletDamage= bulletDamage;
 		this.canCrossObstacles=false;
 		this.isImmune=false;
@@ -128,7 +128,7 @@ class Tank{
 		
 	}
 
-	getCurrentImage(){
+	getImage(){
 		return this.imageInUse;
 	}
 

@@ -25,4 +25,4 @@ class LifeEnhancePower extends Power {
     }
 }
 
-module.exports = LifeEnhancePower();
+module.exports = LifeEnhancePower;

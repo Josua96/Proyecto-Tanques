@@ -30,4 +30,4 @@ class BulletDamagePower extends Power {
     }
 }
 
-module.exports = BulletDamagePower();
+module.exports = BulletDamagePower;
