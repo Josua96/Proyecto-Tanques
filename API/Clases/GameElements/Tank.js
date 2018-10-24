@@ -55,8 +55,6 @@ class Tank{
 		}
 	}
 
-
-
 	getIsEnable(){
 		return this.isEnable;
 	}
@@ -70,6 +68,9 @@ class Tank{
 		this.isEnable=false;
 	}
 
+	getNextDirection(){
+		return this.nextDirection;
+	}
 
 
 	getDirection(){

@@ -71,7 +71,6 @@ class Game{
         }
 
         //aparecer el tanque del jugador
-
     }
 
     getGameBoard(){
@@ -110,6 +109,7 @@ class Game{
             }, this.tanksShootInterval); 
     }
 
+    //HAY DOS DE ESTOS, CUAL ES???????????????????????????
     enemyMovement(tank){
         var intervalo = setInterval(() => {
             
@@ -242,12 +242,12 @@ class Game{
         }
 
     }
-
+    //ES EL METODO DE MOVIMIENTO DEL TANQUE JUGADOR????????????
     createMoveObjectEvent(data){
         var tank= this.getPlayerTank(data.playerID);
         if (tank!= undefined && tank.getIsEnable()){
             tank.setDirection(data.moveDirection);
-            this.createObjectEvent(eventKeys.applyPower,tank);
+            this.createObjectEvent(eventKeys.moveTank,tank);
         }
     }
 

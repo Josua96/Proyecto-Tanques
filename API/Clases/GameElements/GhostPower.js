@@ -11,10 +11,10 @@ class GhostPower extends Power {
 
         this.applyPower();
     }
+
     applyPower(){
         
         if(this.tank!= undefined){
-
             this.tank.setCanCrossObstacles(true);
             setTimeout(function () {
 
