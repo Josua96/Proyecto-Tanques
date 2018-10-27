@@ -28,6 +28,9 @@ export class InputHandler {
         else if (keyCode=== this.keyCodes.right){
             return {"validAction":true,"action": this.playerActions.move,"direction":this.movementDirections.right};
         }
+        else if(keyCode=== this.keyCodes.applyPower){
+            return {"validAction":true,"action": this.playerActions.applyPower};
+        }
         else{
             return {"validAction":false}
         }

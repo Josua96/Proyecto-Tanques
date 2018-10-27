@@ -8,7 +8,7 @@ class GenericElement{
 		General information
         *****************************/
         this.image= image;
-        this.life=100;
+        this.life=life;
 
 		/****************************
 		ActionsControl

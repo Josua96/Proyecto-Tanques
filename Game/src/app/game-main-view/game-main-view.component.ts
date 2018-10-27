@@ -7,6 +7,8 @@ import { ElementRef } from '@angular/core';
 import { ConnectioncontrollerService } from '../Services/connectioncontroller.service';
 import { Gameobject } from '../Clases/game-object';
 import { AnimatedObject } from '../Clases/animated-object';
+import { environment } from '../../environments/environment';
+
 
 @Component({
 	selector: 'app-game-main-view',
@@ -25,45 +27,101 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 	private userName: string;
 	private tankImagePath: string;
 	private inputHandler: InputHandler;
-	private gameCtrl: GameController;
-	private userJoinToGame=false;
+	 
+	gameCtrl: GameController;
+	private actions = environment.playerActions;
+	private userJoinToGame:boolean=false;
+	private firstTime:boolean = true;
+	disable:boolean= false;
 
 	@ViewChild('canvas') canvas: ElementRef;
 	@HostListener('window:keydown', ['$event']) 
 
 	keyEvent(event: KeyboardEvent) {
-		console.log(event.code);
+
+		let action:any = this.inputHandler.getAction(event.keyCode);
+		if (this.userJoinToGame){
+			if (action.validAction){
+
+				if (action.action=== this.actions.move){
+					this.sendMessage(this.actions.move,{"direction": action.direction });
+				}
+
+				else if (action.action=== this.actions.applyPower){
+					this.sendMessage(this.actions.applyPower,{});
+				}
+
+				else{
+					this.sendMessage(this.actions.shoot,{});
+				}
+			}
+		}
+		//console.log(event.code);
 		//alert(JSON.stringify(this.inputHandler.getAction(event.keyCode)));
 	}
 	
 	constructor(private dataExchangerController: ConnectioncontrollerService) {
-		this.tankImagePath = "../../assets/Images/Tanks/red/up.png";
+
 		this.userName = localStorage.getItem("userName");
 		this.inputHandler = new InputHandler();
 	}
 
 	ngOnInit() {
-		this.dataExchangerController.messageObserver.subscribe(msg => {
 		
-			console.log("web service emitió un mensaje");
-			console.log(msg);
+	}
+
+
+	catchServerEvent(){
+
+		this.dataExchangerController.messageObserver.subscribe(data => {
+			
+
+			console.log("message from service");
+			console.log(data);
+
+			if (data.canPaint===true){
+
+				//verificar fin de juego o muerte
+
+
+				if (this.firstTime){
+
+					this.tankImagePath= "../../assets/Images/"+ data.tankImage;
+					this.firstTime=false;
+					this.gameCtrl.initialize(); 
+				}
+
+				if (data.gameFinished===true){
+					window.location.href='main';
+				}
+
+				if(data.playerDead===true){
+					window.location.href='main';
+				}
+			}
+			this.gameCtrl.updateBoard(data.board);
 		
 		});
+	}
 
-		
-		
+	joinToGame(){
+		if (!this.userJoinToGame){
+			this.sendMessage("joinGame",{"Data": "User want to play"});
+			this.userJoinToGame=true;
+			
+		}
 	}
 
 	ngAfterViewInit() { 
 
-
-		if (!this.userJoinToGame){
-			this.sendMessage("joinGame",{"Data": "User want to play"});
-			this.userJoinToGame=true;
-		}
+		
+		
+		
+		
+		
 		// Hacer la conexion al servidor para que nos tire los datos que se necesitan.   
 
-		
+		/*
 		var names = ["gray", "red", "green", "blue", "rose", "white"];     
 		var dirs = ["up", "left", "down", "right"]; 
 		var objects = [];
@@ -84,7 +142,7 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 			}
 		}	
 		*/
-		this.gameCtrl = new GameController(this.canvas.nativeElement,objects, this.inputHandler);   
+		   
 		
 		
 	}
@@ -99,7 +157,12 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 	}
 
 	newGame(){  
-		this.gameCtrl.initialize(); 
+		this.disable= true;
+		this.gameCtrl = new GameController(this.canvas.nativeElement,null, this.inputHandler,1,1);
+		this.catchServerEvent();
+		this.joinToGame();
+		
+		
 	}
 }
 

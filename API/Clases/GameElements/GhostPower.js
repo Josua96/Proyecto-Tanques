@@ -16,13 +16,17 @@ class GhostPower extends Power {
         
         if(this.tank!= undefined){
             this.tank.setCanCrossObstacles(true);
+            var that=this;
             setTimeout(function () {
 
-                if (this.tank!= undefined){
-                    this.tank.setCanCrossObstacles(false);
+                if (that.tank!= undefined){
+                    that.tank.setCanCrossObstacles(false);
+                    that.tank.power=undefined;
                 }
-                this.active=false;
-                this.activeTime=0;
+
+                
+                that.active=false;
+                that.activeTime=0;
               }, this.activeTime)
         }
     }

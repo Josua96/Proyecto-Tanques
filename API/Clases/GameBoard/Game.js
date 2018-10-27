@@ -15,6 +15,7 @@ const LifeEnhancePower = require ("../GameElements/LifeEnhancerPower.js");
 
 const EnemiesMovementManager = require ('./EnemiesMovementManager.js');
 const Data = require ('../../Data.js');
+const imageNames = require ('../../imageNames.js');
 const BoardPosition = require ('../BoardPosition.js');
 
 
@@ -48,8 +49,8 @@ class Game{
          Game component instantiation
         ********************************/
        
-        this.boardController= new Board(this.width/30,this.height/30,wallsNumber,enemiesNumber);
-        this.eventHandler = new EventManager(this.boardController,eventKeys,300,powerCheckingTime,this.endGame);
+        this.boardController= new Board(this.width/this.gameFactor,this.height/this.gameFactor,wallsNumber,enemiesNumber);
+        this.eventHandler = new EventManager(this.boardController,eventKeys,10,powerCheckingTime,this.endGame);
         this.boardController.setWallsAndEnemies(wallsNumber,enemiesNumber,this.eventHandler.getEnemies());
         this.enemiesMovementCalculator = new EnemiesMovementManager(this.eventHandler.getPlayers());
         
@@ -61,6 +62,10 @@ class Game{
 
     setUsersQuantity(value){
         this.usersQuantity= value;
+    }
+
+    setEndGame(value){
+        this.endGame=value;
     }
 
     getEndGame(){
@@ -81,15 +86,29 @@ class Game{
         return this.boardController.getGameBoard();
     }
 
+    isValidPosition(x,y){
+        
+        if(x < 0 || x >=this.width ){
+            return false;
+        }
+
+        if (y < 0 || y >= this.height){
+            return false;
+        }
+
+        return true;
+    
+    }
+
     bulletMovement(bullet,bulletSpeed){
         var intervalo = setInterval(() => {
 
-            if (bullet.getEndMovement()){
+            if (bullet.getEndMovement() || this.endGame){
                 clearInterval(intervalo);
             }
 
             if (bullet.getIsEnable() && bullet.getEndMovement()===false){
-                this.createObjectEvent(eventKeys.moveBullet,bullet);
+                this.createObjectEvent(eventKeys.moveBullet,bullet,-1);
             }
 
             }, bulletSpeed); 
@@ -99,34 +118,45 @@ class Game{
     enemyShoot(tank){
         var intervalo = setInterval(() => {
 
-            if (tank.destroy()){
+            if (tank.destroy() || this.endGame){
                 clearInterval(intervalo);
             }
 
             if (tank.getIsEnable && tank.destroy()===false){
-                var bullet = new Bullet(this.boardController.getRandomPosition(100,1),"",tank.type, 
+                var bullet = new Bullet(this.boardController.getRandomPosition(100,1),tank.getBulletImage(),tank.type, 
                 tank.bulletDamage,tank.bulletSpeed,-1,-1,-1,false);  
                 bullet.setDirection(tank);
-                this.createObjectEvent(eventKeys.appearBullet,bullet);
-                this.bulletMovement(bullet,bullet.getSpeed());
+                if (this.isValidPosition(bullet.x,bullet.y)){
+
+                    this.createObjectEvent(eventKeys.appearBullet,bullet,-1);
+                    this.bulletMovement(bullet,bullet.getSpeed());
+                }
+                
             }
             }, this.tanksShootInterval); 
     }
 
 
-    checkEndGame(){
+    enemyMovement(tank){
+
         var intervalo = setInterval(() => {
             
-            if (tank.destroy()){
+            if (tank === undefined || tank.destroy() || this.endGame){
                 clearInterval(intervalo);
             }
 
             if (tank.getIsEnable() && tank.destroy()===false){
+                
                 var direction= this.enemiesMovementCalculator.getNextMovement(tank,this.width,this.height);
-                if (direction=! -1){
+
+
+                if (direction != -1){
                     tank.setNextDirection(direction);
-                    this.createObjectEvent(eventKeys.moveTank,tank);
+
+                    this.createObjectEvent(eventKeys.moveTank,tank,direction);
+
                 }
+
             }
             
             } , this.tanksMovementInterval); 
@@ -136,22 +166,22 @@ class Game{
     getPower(){
         var power= this.boardController.getRandomPosition(0,5);
         if (power===0){
-            image,tank,time,active,damage
-            return new BulletDamagePower("",null,10000,false, 5);
+
+            return new BulletDamagePower(imageNames.damageShootPower,null,10000,false, 5);
         }
         else if (power===1){
-            return new FasterShootPower("",null,10000,false,100);
+            return new FasterShootPower(imageNames.fasterShootPower,null,10000,false,100);
         }
 
         else if (power===2){
-            return new GhostPower("",null,10000,false);
+            return new GhostPower(imageNames.ghostPower,null,15000,false);
         }
 
         else if (power===3){
-            return new ImmunePower("",null,10000,false);
+            return new ImmunePower(imageNames.immunePower,null,5000,false);
         }
         else{
-            return new LifeEnhancePower("",null,10000,false,50);
+            return new LifeEnhancePower(imageNames.enhancerPower,null,10000,false,50);
         }
         
     }
@@ -163,15 +193,18 @@ class Game{
                 clearInterval(intervalo);
             }
 
-            this.createObjectEvent(eventKeys.appearPower,getPower());
+            this.createObjectEvent(eventKeys.appearPower,this.getPower(),-1);
+
             
             } , this.powerAppearInterval); 
     }
 
     canGenerateEnemy(){
-        var playerQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.players);
-        var enemiesQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.enemies);
-        return playerQuantity === enemiesQuantity;
+        var playerQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.getPlayers());
+        var enemiesQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.getEnemies());
+        console.log("jugadores = "+ playerQuantity);
+        console.log("enemigos = "+ enemiesQuantity);
+        return enemiesQuantity <= (playerQuantity*2);
     }
 
 
@@ -182,13 +215,19 @@ class Game{
             if(this.endGame){
                 clearInterval(intervalo);
             }
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            console.log("genereación de enemigos::::::::::::::::::::::::::: "+ this.canGenerateEnemy());
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-            if ( this.canGenerateEnemy()){
+            if (this.canGenerateEnemy()){
 
-                var tank = new Tank(-1,-1,Data.machineTank,this.bulletDamage,0,0,"","","","","");
+                var tank = new Tank(-1,-1,Data.machineTank,this.bulletDamage,0,0,
+                    imageNames.whiteTankLeft,
+                    imageNames.whiteTankUp,imageNames.whiteTankRight,imageNames.whiteTankDown,imageNames.bulletOne);
+                tank.setDirection(Data.up);
+                tank.setCurrentImage(Data.up);
                 this.eventHandler.insertInDict(this.eventHandler.getEnemies(),tank,false);
-                this.eventHandler.addEvent(new Event(eventKeys.appearTank,tank));
-                this.createObjectEvent(eventKeys.appearTank, tank);
+                this.createObjectEvent(eventKeys.appearTank, tank,-1);
                 this.enemyMovement(tank);
                 this.enemyShoot(tank);
 
@@ -199,67 +238,110 @@ class Game{
     }
 
     checkEndGame(){
+        
         var intervalo = setInterval(() => {
-            
+
             if (this.endGame===true){
+                console.log("limpiar intervalo porque el juego terminó");
                 clearInterval(intervalo);
             }
 
-            if (this.eventHandler.getElementsQuantity(this.eventHandler.getPlayers()) === 0 ){
-                
-                this.endGame==true;
+            if (this.eventHandler.getElementsQuantity(this.eventHandler.getPlayers()) === 0 ||
+                this.eventHandler.getEagleWasKilled()){
+                this.setEndGame(true);
+
                 clearInterval(intervalo);
             }
             
-            } , 100); 
+            } , 300); 
     }
 
     initGame(){
         this.enemyGeneration();
         this.checkEndGame();
+        this.generatePower();
     }
 
-    createObjectEvent(key,newObject){
-        this.eventHandler.addEvent(new Event(key,newObject));
+    createObjectEvent(key,newObject,direction){
+        this.eventHandler.addEvent(new Event(key,newObject,direction));
     }
 
     
-    ApplyPowerObjectEvent(data){
-        var tank= this.getPlayerTank(data.playerID);
+    createApplyPowerObjectEvent(data){
+        var tank= this.getPlayerTank(data.playerId);
         if (tank!= undefined){
-            this.createObjectEvent(eventKeys.applyPower,tank);
+            this.createObjectEvent(eventKeys.applyPower,tank,-1);
         }
         
     }
 
     createShootObjectEvent(data){
 
-        var tank= this.getPlayerTank(data.playerID);
+        var tank= this.getPlayerTank(data.playerId);
 
         //si ya fue pintado y no está destruido
-        if (tank!= undefined && tank.getIsEnable()){
-            var bullet = new Bullet(this.playerID,"",tank.type, 
+        if (tank!= undefined && tank.getIsEnable() && !this.endGame){
+            var bullet = new Bullet(this.playerID,tank.getBulletImage(),tank.type, 
                 tank.bulletDamage,tank.bulletSpeed,-1,-1,-1,false);
             bullet.setDirection(tank);
-            this.createObjectEvent(eventKeys.appearBullet,bullet);
+            this.createObjectEvent(eventKeys.appearBullet,bullet,-1);
             this.bulletMovement(bullet,bullet.getSpeed());
-            this.createShootObjectEvent(eventKeys.appearBullet,bullet);
+
         }
 
     }
-    //ES EL METODO DE MOVIMIENTO DEL TANQUE JUGADOR????????????
+
+
     createMoveObjectEvent(data){
-        var tank= this.getPlayerTank(data.playerID);
+        var tank= this.getPlayerTank(data.playerId);
         if (tank!= undefined && tank.getIsEnable()){
-            tank.setDirection(data.moveDirection);
-            this.createObjectEvent(eventKeys.moveTank,tank);
+            tank.setDirection(data.direction);
+            this.createObjectEvent(eventKeys.moveTank,tank,data.direction);
         }
+    }
+
+    getImageForPlayer(playerId,tank){
+        if (playerId===0){
+            tank.setImages([imageNames.redTankLeft,imageNames.redTankUp,imageNames.redTankRight,
+                imageNames.redTankDown, imageNames.bulletOne]);
+        }
+        else if (playerId===1){
+            tank.setImages([imageNames.blueTankLeft,imageNames.blueTankUp,imageNames.blueTankRight,
+                imageNames.blueTankDown, imageNames.bulletOne]);
+        }
+
+        else if (playerId===2){
+            tank.setImages([imageNames.greenTankLeft,imageNames.greenTankUp,imageNames.greenTankRight,
+                imageNames.greenTankDown, imageNames.bulletOne]);
+        }
+
+        else if (playerId===2){
+            tank.setImages([imageNames.grayTankLeft,imageNames.grayTankUp,imageNames.grayTankRight,
+                imageNames.grayTankDown, imageNames.bulletOne]);
+        }
+
+        else{
+            tank.setImages([imageNames.pinkTankLeft,imageNames.pinkTankUp,imageNames.pinkTankRight,
+                imageNames.pinkTankDown, imageNames.bulletOne]);
+        }
+
+    }
+
+    deletePlayerTank(playerId){
+        var tank = this.getPlayerTank(playerId);
+        if (tank!= undefined){
+            this.eventHandler.deletePlayerTank(tank);
+        }
+        
     }
 
     createTankForPlayers(playerID){
         var tank= new Tank(playerID,playerID,Data.playerTank,this.bulletDamage,0,0,"","","","","");
+        this.getImageForPlayer(playerID,tank);
+        tank.setDirection(Data.up);
+        tank.setCurrentImage(Data.up);
         this.eventHandler.insertInDict( this.eventHandler.getPlayers(),tank,true);
-        this.createObjectEvent(eventKeys.appearTank,tank);
+        this.createObjectEvent(eventKeys.appearTank,tank,-1);
         return tank;
     }
 
@@ -272,8 +354,6 @@ class Game{
         
         var tank= this.getPlayerTank(playerID);
         
-        console.log("tanque del jugador");
-        console.log(tank);
         if (tank===undefined){
             return true;
         }

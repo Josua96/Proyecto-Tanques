@@ -4,7 +4,7 @@
 
 var express = require('express');
 var app = express();
-var timeForEmit= 500;
+var timeForEmit= 250;
 
 const GameManager= require('./Clases/GameBoard/GamesManager.js');
 
@@ -21,17 +21,6 @@ app.use(function(req, res, next)
     next();
 });
 
-
-
-app.get('/test',function(req, res)
-{    
-
-    console.log("web service escucha");  
-    res.send(JSON.stringify({"Response":"Preuba superada"}));
-       
-});
-
-
 var webService = app.listen(8083, function() {
     var host = webService.address().address;
     var port = webService.address().port;
@@ -45,6 +34,7 @@ io.on('connection', (socket) => {
 
     var userConnected= true;
     var userID= usersCount;
+    var gameId;
     usersCount++
     console.log("user number:" + userID+ " connected");
 
@@ -56,8 +46,10 @@ io.on('connection', (socket) => {
         }
         else{
             console.log("gameID:" + gameId);
+                
             var data= gamesManager.getDataForPlayer(gameId,userID,userCanPlay);
             socket.emit('gameState', data);
+         
         }
         
         }, timeForEmit);
@@ -69,16 +61,20 @@ io.on('connection', (socket) => {
 
     // Log whenever a client disconnects from our websocket server
     socket.on('disconnect', function(){
-        console.log('user disconnected');
+        gamesManager.deletePlayerTank(gameId,userID);
         userConnected= false;
+        //eliminar el tanque del jugador
         usersCount--;
+        if (usersCount===0){
+            gamesManager.deleteGame(gameId);
+        }
+        
     });
     
     //user invoke this when want to play
     socket.on('joinGame', (data) => {
-        console.log("user join to game");
-        console.log(data);
-        var gameId = gamesManager.joinPlayerToGame(-1,userID);
+
+        gameId = gamesManager.joinPlayerToGame(-1,userID);
         var userCanPlay=true;
         if (gameId===-1){
            userCanPlay=false;
@@ -88,145 +84,22 @@ io.on('connection', (socket) => {
 
     });
 
-    // When we receive a 'message' event from our client, print out
-    // the contents of that message and then echo it back to our client
-    // using `io.emit()`
     socket.on('shoot', (data) => {
-        console.log("user shoot action");
-        console.log(data);
-        //add http request to queue  
+
+        gamesManager.playerShoot({"playerId": userID},gameId);
+
     });
 
     socket.on('move', (data) => {
-        console.log("user move to some side");
-        console.log(data);
-        //add http request to queue  
+        
+        gamesManager.playerMove({"playerId": userID,"direction":data.direction},gameId); 
     });
 
-    socket.on('move', (data) => {
-        console.log("user move to some side");
-        console.log(data);
-        //add http request to queue  
+    socket.on('applyPower', (data) => {
+        gamesManager.applyPower(gameId,{"playerId": userID});
+  
     });
 
 
 
 });
-
-var c=3;
-
-function tAp(){
-    console.log(c);
-}
-
-function nada(){
-    var emitServerMessage = setInterval(() => {
- 
-        tAp();
-        
-        }, 200);
-}
-
-function tankAppear(){
-    var control=60;
-    var emitServerMessage = setInterval(() => {
- 
-        if (control < 0){
-            console.log("ya no generaré más tanques");
-            clearInterval(emitServerMessage);
-
-        }
-        else{
-
-            console.log("Otro tanque ha sido generado");
-            control--;
-        }
-        
-        }, 200);
-}
-
-function powerAppear(control,text){
-
-    var emitServerMessage = setInterval(() => {
-        console.log(text);
-        if (control < 0){
-            console.log("ya no puedo generar más poderes");
-            clearInterval(emitServerMessage);
-
-        }
-        else{
-
-            
-            control--;
-        }
-        
-        }, 600);
-}
-
-function otherProcessing(){
-    var control=100;
-    var emitServerMessage = setInterval(() => {
-        if (control < 0){
-            console.log("Se acabó el otro trabajo corriendo");
-            clearInterval(emitServerMessage);
-
-        }
-        else{
-
-            console.log("Otro trabajo corriendo");
-            control--;
-        }
-        
-        }, 800);
-}
-
-//tankAppear();
-console.log("no esperé a que terminara generación de tanque");
-//powerAppear(20,"appear 1");
-//powerAppear(30,"appear2")
-
-
-
-console.log("no esperé a que terminara generación de poder");
-//otherProcessing();
-
-/*
-class algo{
-
-    constructor(){
-
-        this.mensaje="prueba";
-        this.lista=[1,2,3,4];
-        this.otraPrueba="hola";
-        this.intervalo=200;
-
-    }
-
-    imprimir(algo){
-        console.log(algo);
-    }
-
-    tAp(){
-
-        console.log("conozco mensaje: "+ this.mensaje);
-        console.log("conozco lista: "+ this.lista);
-        console.log("conozco: "+ this.otraPrueba);
-        
-    }
-
-    nada(){
-        var emitServerMessage = setInterval(() => {
-            console.log("entrando");
-            this.tAp();
-            
-            }, this.intervalo);
-    }
-
-}
-
-var objeto= new algo();
-console.log("imprimir mensaje "+ objeto.mensaje);
-console.log("imprimir lista "+ objeto.lista);
-console.log("imprimir oP "+ objeto.otraPrueba);
-objeto.nada();
-*/

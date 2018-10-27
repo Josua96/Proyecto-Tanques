@@ -32,8 +32,11 @@ class GamesManager{
         return this.games[gameId].getGameBoard();
     }
 
+
     parseBoard(boardController){
-        console.log(boardController.gameBoard);
+
+        
+        var forRevision=[];
         var newArray= new Array(boardController.width);
         for (var i=0; i< boardController.width;i++){
             
@@ -41,30 +44,42 @@ class GamesManager{
            
     		for(var j=0; j< boardController.height; j++){
                 
-                console.log(boardController.gameBoard[i][j]);
+
                 newArray[i][j]= boardController.gameBoard[i][j].gameElement.getImage();
     			
     		}
         }
+
         return newArray;
     }
 
     getDataForPlayer(gameId,playerId,UserCanPlay){
-        console.log("playerID: " + playerId);
+
         var dic= {};
-       
-        console.log("tablero");
-        console.log(this.games[gameId].boardController.gameBoard);
 
         dic["canPaint"]=UserCanPlay;
         dic["playerDead"]= this.games[gameId].playerDead(playerId);
         dic["gameFinished"]= this.games[gameId].getEndGame();
         dic["boardWidth"]=this.games[gameId].boardController.getWidth();
         dic["boardHeight"]=this.games[gameId].boardController.getHeight();
-        dic["tankImage"]= this.getPlayerTank(gameId,playerId).getImage();
+        var tank=this.getPlayerTank(gameId,playerId);
+        dic["tankImage"]="free.png";
+        if(tank!=undefined){
+            dic["tankImage"]= this.getPlayerTank(gameId,playerId).getImage();
+        }     
         dic["board"]= this.parseBoard(this.games[gameId].boardController);
         return dic;
 
+    }
+
+    deleteGame(gameId){
+
+        this.games.splice(gameId,1);
+
+    }
+
+    deletePlayerTank(gameId,playerId){
+        this.games[gameId].deletePlayerTank(playerId);
     }
 
     joinPlayerToGame(gameId,playerId){
@@ -75,8 +90,8 @@ class GamesManager{
 
         
         if (this.games.length===0){
-            console.log("generate a new game");
-            this.addNewGame(720,720,30,5,1000*60,3000,2000,1500,5000,20);
+
+            this.addNewGame(660,660,30,0,1000*60,3000,3000,1500,5000,20);
             this.games[this.games.length-1].startGame();
         
         }
@@ -96,11 +111,10 @@ class GamesManager{
     }
 
     playerShoot(data,gameId){
-        var tank = this.getPlayerTank(gameId,data.playerId);
         this.games[gameId].createShootObjectEvent(data);
     }
     
-    applyPower(gameId){
+    applyPower(gameId,data){
         this.games[gameId].createApplyPowerObjectEvent(data);
     }
 

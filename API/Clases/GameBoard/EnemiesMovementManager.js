@@ -10,13 +10,14 @@ class EnemiesMovemet{
     getNextMovement(tank,width,height){
         var destiny = this.selectCloserPosition(tank,this.players);
 
-        if (destiny[0]!=-1){
-            return -1;  //dirección inválida representa movimiento no posible
+        if (destiny[0]===-1){
+            return [0,0,-1];  //dirección inválida representa movimiento no posible
         }
 
-        var movement = this.getValidMovement(tank,width,height,destiny[0],destiny[y]);
+        var movement = this.getValidMovement(tank,width,height,destiny[0],destiny[1]);
+
         if (movement.length===0){
-            return -1;
+            return [0,0,-1];
         }
 
         return movement[2]; //retornar la dirección donde debe moverse
@@ -50,12 +51,13 @@ class EnemiesMovemet{
         var i;
         for (i=0;i < positions.length; i++){
 
-            temp= Math.abs(betterX-positions[i][0]) + Math.abs(betterY-positiosn[i][1]);
+            temp= Math.abs(betterX-positions[i][0]) + Math.abs(betterY-positions[i][1]);
+
             if (temp < sum){
 
                 toPosition[0]=positions[i][0];
                 toPosition[1]=positions[i][1];
-                toPosition[2]= positions[2];
+                toPosition[2]= positions[i][2];
                 sum=temp;
             }
         }
@@ -75,13 +77,14 @@ class EnemiesMovemet{
         var temp;
         for (var player in players) {
            
-            if (players.hasOwnProperty(player) && players[player]!= undefined && players[player].getIsEnable()) {           
-                temp=Math.abs(player.x- tank.x) + Math.abs(player.y - tank.y);
+            if (players.hasOwnProperty(player) && players[player]!= undefined && players[player].getIsEnable()) { 
+
+                temp=Math.abs(players[player].x- tank.x) + Math.abs(players[player].y - tank.y);
                 // check if player is the most closer
 
                 if (temp < better ){
-                    betterX= player.x;
-                    betterY= player.y;
+                    betterX= players[player].x;
+                    betterY= players[player].y;
                     better= temp;
                 }     
             }

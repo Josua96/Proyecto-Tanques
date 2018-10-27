@@ -68,7 +68,8 @@ class Bullet{
 
     //determinar la dirección donde la bala tiene que aparecer con respecto al tanque
     setDirection(tank){
-        this.direction=tank.getDirection();;
+        this.direction=tank.getDirection();
+        
         if (this.direction === Data.left){
             this.x=tank.x;
             this.y= tank.y-1;
@@ -101,16 +102,16 @@ class Bullet{
 
     moveBullet(){
         if(this.direction==0){
-            this.x = this.x-1;
+            this.y = this.y-1;
         }
         else if (this.direction==1){
-            this.y = this.y+1;
+            this.x = this.x-1;
         }
         else if(this.direction==2){
-            this.x=this.x+1;
+            this.y=this.y+1;
         }
         else{
-            this.y=this.y-1;
+            this.x =this.x+1;
         }
     }
 

@@ -22,7 +22,7 @@ export class MainViewComponent implements OnInit {
       window.location.href='gameMainView';
     }
     else{
-      alert("El aliar debe tener al menos 5 caracteres"); 
+      alert("El alias debe tener más de 5 caracteres"); 
     }
     
   }

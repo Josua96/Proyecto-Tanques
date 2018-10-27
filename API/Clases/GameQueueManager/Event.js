@@ -1,9 +1,9 @@
 class Event{
 
-	constructor(type, object){
+	constructor(type, object,direction){
         this.type= type;
         this.object= object;
-        this.state= true;
+        this.direction= direction;
     }
 
     getType(){

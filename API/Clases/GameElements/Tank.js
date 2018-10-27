@@ -22,12 +22,12 @@ class Tank{
 		ActionsControl
 		*****************************/
 		//in miliseconds
-		this.bulletSpeed=  500;
+		this.bulletSpeed=  200;
 		this.direction=-1;
 		this.nextDirection=-1;
 
 		this.imagesNames=[leftImage,upImage,rightImage, downImage,bulletImage];
-		this.imageInUse=this.imagesNames[0];
+		this.imageInUse=this.imagesNames[1];
 		this.bulletDamage= bulletDamage;
 		this.canCrossObstacles=false;
 		this.isImmune=false;
@@ -35,6 +35,11 @@ class Tank{
 
 	}
 
+	setImages(images){
+
+		this.imagesNames=images;
+
+	}
 
 	getIsEnable(){
 		return this.isEnable;
@@ -98,7 +103,7 @@ class Tank{
 		return this.bulletDamage;
 	}
 
-	setbulletSpeed(value){
+	setBulletSpeed(value){
 		this.bulletSpeed= value;
 	}
 
@@ -124,7 +129,8 @@ class Tank{
 
 	//index must to coincidence with UI left,right,up and down keyCodes
 	setCurrentImage(index){
-		thia.imageInUse= this.imageNames[index];
+		this.imageInUse= this.imagesNames[index];
+		this.direction=index;
 		
 	}
 
@@ -138,12 +144,13 @@ class Tank{
 
 	decreaseLife(damage){
         if (this.life  > 0){
-            this.life-= damage;
+			this.life= this.life - damage;
+			
         }
     }
 
     destroy(){
-        return this.life<=0;
+        return this.life <=0;
     }
 
 }

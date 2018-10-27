@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  ws_url: 'http://localhost:8083',
-  keyCodes: {right:39, left:37,up:38,down:40,shoot:32},
-  playerActions:{shoot:"shoot", move:"move",join:"joinGame"},
+  ws_url: 'http://172.24.99.9:8083',
+  keyCodes: {right:39, left:37,up:38,down:40,shoot:32,applyPower:13},
+  playerActions:{shoot:"shoot", move:"move",join:"joinGame",applyPower:"applyPower"},
   serverUpdateMessages:{updateMessage:"gameState"},
   directions:{left:0, up:1, right:2, down:3}
 };

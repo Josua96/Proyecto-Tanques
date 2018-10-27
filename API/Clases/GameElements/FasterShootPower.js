@@ -17,13 +17,19 @@ class FasterShootPower extends Power {
         if(this.tank!= undefined){
 
             this.tank.setBulletSpeed(this.tank.getBulletSpeed() - velocity);
+
+            var that=this;
+
             setTimeout(function () {
 
-                if (this.tank!= undefined){
-                    this.tank.setBulletSpeed (this.tank.getBulletSpeed() - velocity);
+                if (that.tank!= undefined){
+                    that.tank.setBulletSpeed (that.tank.getBulletSpeed() + velocity);
+                    that.tank.power=undefined;
                 }
-                this.active=false;
-                this.activeTime=0;
+
+                that.active=false;
+                that.activeTime=0;
+
               }, this.activeTime)
         }
     }

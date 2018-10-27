@@ -4,10 +4,12 @@ class Power{
     
     constructor(image,tank,time,active){
         //in miliseconds
-        this.tank= image;
+        this.image= image;
         this.tank= tank;
         this.activeTime=time;
         this.active=active;
+        this.x=0;
+        this.y=0;
     }
 
     setTank(tankObject){

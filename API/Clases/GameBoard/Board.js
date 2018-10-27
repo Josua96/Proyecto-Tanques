@@ -3,7 +3,7 @@ const Generic = require('../GameElements/GenericElement.js');
 const Tank = require('../GameElements/Tank.js');
 const FreeSpace = require('../GameElements/FreeSpace.js');
 const BoardPosition= require('../BoardPosition.js');
-
+const imageNames=require("../../imageNames.js");
 const Data= require('../../Data.js');
 
 
@@ -20,8 +20,7 @@ class Board{
         this.height= height;
 
         this.gameBoard= new Array(this.width);
-        console.log("solo columnas");
-        console.log(this.gameBoard);
+
 
         this.initBoard();
 
@@ -50,20 +49,40 @@ class Board{
            
     		for(var j=0; j< this.height; j++){
                 
-                this.gameBoard[i][j]= new BoardPosition(Data.free,new FreeSpace("image"),-1);
+                this.gameBoard[i][j]= new BoardPosition(Data.free,new FreeSpace(imageNames.freeSpace),-1);
     			
     		}
         
         }
 
         //set eagle 
-        var i=Math.round(this.width/2);
-        this.setPosition(i,0,new BoardPosition(Data.eagle,new Generic("",100,i,0),-1));
+        var i=Math.round(this.height/2);
+        this.setPosition(i,0,new BoardPosition(Data.eagle,new Generic(imageNames.eagle,100,i,0),-1));
+        this.setPosition(i-1,0,new BoardPosition(Data.wall,new Generic(imageNames.wall,100,i-1,0),-1));
+        this.setPosition(i-1,1,new BoardPosition(Data.wall,new Generic(imageNames.wall,100,i-1,1),-1));
+        this.setPosition(i,1,new BoardPosition(Data.wall,new Generic(imageNames.wall,100,i,1),-1));
+        this.setPosition(i+1,0,new BoardPosition(Data.wall,new Generic(imageNames.wall,100,i+1,0),-1));
+        this.setPosition(i+1,1,new BoardPosition(Data.wall,new Generic(imageNames.wall,100,i+1,1),-1));
 
-        console.log("tablero inicializado");
-        console.log(this.gameBoard[0][0]);
+     
+
+
 
     }
+
+
+    checkPosition(x,y){
+
+
+        if ( (x >=0 && x < this.width ) && ( y >= 0 && y < this.height )){
+            return true;
+        }
+
+        else{
+            return false;
+        }
+    }
+
 
     getRandomPosition(max,min){
         return Math.floor(Math.random() * (max - min) + min);
@@ -79,7 +98,7 @@ class Board{
             y= this.getRandomPosition(this.height,0);
             
             if (this.gameBoard[x][y].isFree()){
-                this.gameBoard[x][y].setData(Data.wall,new Generic("image",100,x,y),-1);
+                this.gameBoard[x][y].setData(Data.wall,new Generic(imageNames.wall,100,x,y),-1);
                 wallsNumber--;
             }
         }    
@@ -91,7 +110,11 @@ class Board{
             y= this.getRandomPosition(this.height,0);
             
             if (this.gameBoard[x][y].isFree()){
-                enemy=new Tank(Object.keys(enemies).length,-1,Data.machineTank,20,x,y,"","","","","bulletImage");
+                enemy=new Tank(Object.keys(enemies).length.toString(),-1,Data.machineTank,20,x,y,imageNames.whiteTankLeft,
+                imageNames.whiteTankUp,imageNames.whiteTankRight,imageNames.whiteTankDown,imageNames.bulletOne);
+                enemy.setIsEnable(true);
+                enemy.setDirection(Data.up);
+                enemy.setCurrentImage(Data.up);
                 this.gameBoard[x][y].setData(Data.enemy,enemy,-1);
                 enemies[enemy.id]= enemy;
                 enemiesNumber--;
@@ -100,10 +123,15 @@ class Board{
     }
 
     setPosition(x,y,newObject){
-        console.log("tablero");
-        console.log(this.gameBoard);
-        this.gameBoard[x][y] = newObject;
-        return true;
+
+        if (this.checkPosition(x,y)){
+            this.gameBoard[x][y] = newObject;
+            return true;
+        }
+        else{
+            return false;
+        }
+        
     }
 
 
@@ -121,8 +149,18 @@ class Board{
             x= this.getRandomPosition(fWidth,iWidth);
             y= this.getRandomPosition(this.height,0);
             if (this.gameBoard[x][y].isFree()){
-                this.gameBoard[x][y]= tankObject;
-                tankObject.setPosition(x,y);
+
+                
+                var type= Data.player;
+                if(tankObject.playerId===-1){
+                    type= Data.enemy;
+                }
+
+                tankObject.x = x;
+                tankObject.y=y;
+
+                // this.gameBoard[x][y]= tankObject;
+                this.setPosition(x,y,new BoardPosition(type,tankObject,-1));
                 tankObject.setIsEnable(true);
                 inGame=true;
             }

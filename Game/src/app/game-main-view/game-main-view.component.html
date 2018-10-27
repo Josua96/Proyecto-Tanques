@@ -4,7 +4,7 @@
         <label class="headItem"> User name: {{userName}} </label>
         <label class="headItem"> Your tank: </label>       
         <img class="tankImage" [src]="tankImagePath">
-        <button class="btn btn-primary" id="boton1" style="margin-left:10px;" (click)="newGame()" >
+        <button class="btn btn-primary" id="boton1" style="margin-left:10px;" [disabled]="disable" (click)="newGame()" >
             Iniciar
             <span class="glyphicon glyphicon-play"></span>
         </button>                    
@@ -12,8 +12,54 @@
 
     <div class="gameBody">
         <div id="gameBoard" class="gameDisplay container-fluid">
-            <canvas height="720px" width="720px" id="lienzo" style="height: 580px;" #canvas>
+            <canvas height="720px" width="720px" id="lienzo" style="height: 530px;" #canvas>
             </canvas>
-        </div>   
+        </div>
+       
+    </div>
+
+    <div style="display:none" >
+            <img src="../../assets/Images/edge.png" id="edge.png" >
+            <img src="../../assets/Images/wall.png" id="wall.png" >
+            <img src="../../assets/Images/bullet1.png" id="bullet1.png" >
+            <img src="../../assets/Images/bullet2.png" id="bullet2.png" >
+            <img src="../../assets/Images/damageShoot.png" id="damageShoot.png" >
+            <img src="../../assets/Images/eagle.png" id="eagle.png" >
+            <img src="../../assets/Images/fasterShoot.png" id="fasterShoot.png" >
+            <img src="../../assets/Images/immune.png" id="immune.png" >
+            <img src="../../assets/Images/enhancer.png" id="enhancer.png" >
+            <img src="../../assets/Images/ghost.png" id="ghost.png" >
+            <img src="../../assets/Images/free.png" id="free.png" >
+
+            <img src="../../assets/Images/blueUp.png" id="blueUp.png">
+            <img src="../../assets/Images/blueLeft.png" id="blueLeft.png">
+            <img src="../../assets/Images/blueDown.png" id="blueDown.png">
+            <img src="../../assets/Images/blueRight.png" id="blueRight.png">
+
+            <img src="../../assets/Images/pinkUp.png" id="pinkUp.png">
+            <img src="../../assets/Images/pinkLeft.png" id="pinkLeft.png">
+            <img src="../../assets/Images/pinkDown.png" id="pinkDown.png">
+            <img src="../../assets/Images/pinkRight.png" id="pinkRight.png">
+
+            <img src="../../assets/Images/greenUp.png" id="greenUp.png">
+            <img src="../../assets/Images/greenLeft.png" id="greenLeft.png">
+            <img src="../../assets/Images/greenDown.png" id="greenDown.png">
+            <img src="../../assets/Images/greenRight.png" id="greenRight.png">
+
+            <img src="../../assets/Images/redUp.png" id="redUp.png">
+            <img src="../../assets/Images/redLeft.png" id="redLeft.png">
+            <img src="../../assets/Images/redDown.png" id="redDown.png">
+            <img src="../../assets/Images/redRight.png" id="redRight.png">
+
+            <img src="../../assets/Images/whiteUp.png" id="whiteUp.png">
+            <img src="../../assets/Images/whiteLeft.png" id="whiteLeft.png">
+            <img src="../../assets/Images/whiteDown.png" id="whiteDown.png">
+            <img src="../../assets/Images/whiteRight.png" id="whiteRight.png">
+
+            <img src="../../assets/Images/grayUp.png" id="grayUp.png">
+            <img src="../../assets/Images/grayLeft.png" id="grayLeft.png">
+            <img src="../../assets/Images/grayDown.png" id="grayDown.png">
+            <img src="../../assets/Images/grayRight.png" id="grayRight.png">
+
     </div>
 </div>

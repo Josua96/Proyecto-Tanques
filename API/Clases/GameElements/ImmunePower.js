@@ -18,12 +18,18 @@ class ImmunePower extends Power {
         if (this.tank!=undefined){
             this.tank.setIsImmune(true);
             
+            var that=this;
+
             setTimeout(function () {
-                if (this.tank!= undefined){
-                    this.tank.setIsImmune(false);
+                
+                if (that.tank!= undefined){
+                    that.tank.setIsImmune(false);
+                    that.tank.power=undefined;
                 }
-                this.active=false;
-                this.activeTime=0;
+
+                
+                that.active=false;
+                that.activeTime=0;
                 
             }, this.activeTime)
         }

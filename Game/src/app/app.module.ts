@@ -11,6 +11,7 @@ import { MainViewComponent } from './main-view/main-view.component';
 
 //here is necesary to set all module routes
 const routes: Routes = [
+  {path:'main', component: MainViewComponent},
   { path: '', component: MainViewComponent},
   {path:'gameMainView', component: GameMainViewComponent}
 ];
