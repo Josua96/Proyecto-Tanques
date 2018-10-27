@@ -34,6 +34,9 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 	private firstTime:boolean = true;
 	disable:boolean= false;
 
+	private audio:any;
+
+
 	@ViewChild('canvas') canvas: ElementRef;
 	@HostListener('window:keydown', ['$event']) 
 
@@ -49,10 +52,12 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 
 				else if (action.action=== this.actions.applyPower){
 					this.sendMessage(this.actions.applyPower,{});
+					this.playAudio("bonus_appear.wav");
 				}
 
 				else{
 					this.sendMessage(this.actions.shoot,{});
+					this.playAudio("player_shot.wav");
 				}
 			}
 		}
@@ -64,10 +69,27 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 
 		this.userName = localStorage.getItem("userName");
 		this.inputHandler = new InputHandler();
+		this.playBackgroundMusic();
 	}
 
 	ngOnInit() {
 		
+	}
+
+	playBackgroundMusic(){
+		let myAudio = new Audio("../../assets/Sounds/Fantascape.mp3"); 
+		myAudio.addEventListener('ended', function() {
+    	this.currentTime = 0;
+    	this.play();
+		}, false);
+		myAudio.play();
+	}
+
+	playAudio(name:string){
+		this.audio = new Audio();
+		this.audio.src= "../../assets/Sounds/"+name;
+		this.audio.load();
+		this.audio.play();
 	}
 
 
