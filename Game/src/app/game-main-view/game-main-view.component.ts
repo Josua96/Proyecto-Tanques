@@ -20,7 +20,7 @@ import { environment } from '../../environments/environment';
 
 
 
-export class GameMainViewComponent implements OnInit, AfterViewInit {
+export class GameMainViewComponent implements OnInit{
 	public head: string;
 	public message: string;
 
@@ -133,46 +133,6 @@ export class GameMainViewComponent implements OnInit, AfterViewInit {
 			
 		}
 	}
-
-	ngAfterViewInit() { 
-
-		
-		
-		
-		
-		
-		// Hacer la conexion al servidor para que nos tire los datos que se necesitan.   
-
-		/*
-		var names = ["gray", "red", "green", "blue", "rose", "white"];     
-		var dirs = ["up", "left", "down", "right"]; 
-		var objects = [];
-		var i = 0; 
-		var j = 0; 
-		/*
-		for(i=0;i<6; i++)
-		{
-			for(j=0;j<4; j++)
-			{
-				var ima = new Image();
-				ima.src = "../../assets/Images/Tanks/"+names[i]+"/"+dirs[j]+".png";
-				ima.onload
-				{
-					objects.push(new AnimatedObject(ima, [ima], {x:(i*30)+60,y:(j*30)+60}),);          
-				}
-
-			}
-		}	
-		*/
-		   
-		
-		
-	}
-
-	send() {
-		this.sendMessage(this.head,this.message);
-	}
-
 
 	sendMessage(head: string, data: Object) {
 		this.dataExchangerController.sendMsg(head,data);

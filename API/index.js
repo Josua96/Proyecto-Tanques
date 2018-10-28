@@ -36,8 +36,6 @@ io.on('connection', (socket) => {
     var userID= usersCount;
     var gameId;
     usersCount++
-    console.log("user number:" + userID+ " connected");
-
 
     var emitGameState = function(gameId, userCanPlay){ 
         var emitServerMessage = setInterval(() => {
@@ -45,7 +43,7 @@ io.on('connection', (socket) => {
             clearInterval(emitServerMessage);
         }
         else{
-            console.log("gameID:" + gameId);
+
                 
             var data= gamesManager.getDataForPlayer(gameId,userID,userCanPlay);
             socket.emit('gameState', data);
@@ -56,8 +54,6 @@ io.on('connection', (socket) => {
 
     }
 
-    // Log whenever a user connects
-    console.log('user connected');
 
     // Log whenever a client disconnects from our websocket server
     socket.on('disconnect', function(){

@@ -174,11 +174,11 @@ class Game{
         }
 
         else if (power===2){
-            return new GhostPower(imageNames.ghostPower,null,15000,false);
+            return new GhostPower(imageNames.ghostPower,null,20000,false);
         }
 
         else if (power===3){
-            return new ImmunePower(imageNames.immunePower,null,5000,false);
+            return new ImmunePower(imageNames.immunePower,null,8000,false);
         }
         else{
             return new LifeEnhancePower(imageNames.enhancerPower,null,10000,false,50);
@@ -200,11 +200,14 @@ class Game{
     }
 
     canGenerateEnemy(){
-        var playerQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.getPlayers());
-        var enemiesQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.getEnemies());
-        console.log("jugadores = "+ playerQuantity);
-        console.log("enemigos = "+ enemiesQuantity);
-        return enemiesQuantity <= (playerQuantity*2);
+       
+       var playerQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.getPlayers());
+       // var enemiesQuantity= this.eventHandler.getElementsQuantity(this.eventHandler.getEnemies());
+       
+       var enemiesQuantity= this.eventHandler.getEnemiesQuantity();
+
+       return enemiesQuantity <= (playerQuantity*2);
+    
     }
 
 
@@ -215,9 +218,6 @@ class Game{
             if(this.endGame){
                 clearInterval(intervalo);
             }
-            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            console.log("genereación de enemigos::::::::::::::::::::::::::: "+ this.canGenerateEnemy());
-            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             if (this.canGenerateEnemy()){
 
@@ -227,6 +227,8 @@ class Game{
                 tank.setDirection(Data.up);
                 tank.setCurrentImage(Data.up);
                 this.eventHandler.insertInDict(this.eventHandler.getEnemies(),tank,false);
+                this.eventHandler.setEnemiesQuantity(1);
+                
                 this.createObjectEvent(eventKeys.appearTank, tank,-1);
                 this.enemyMovement(tank);
                 this.enemyShoot(tank);
@@ -242,7 +244,7 @@ class Game{
         var intervalo = setInterval(() => {
 
             if (this.endGame===true){
-                console.log("limpiar intervalo porque el juego terminó");
+                
                 clearInterval(intervalo);
             }
 

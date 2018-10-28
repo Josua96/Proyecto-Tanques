@@ -19,6 +19,7 @@ class EventsManager{
         this.players={};
         this.inUse=false;
         this.eagleWasKilled=false;
+        this.enemiesQuantity=0;
 
         /****** QUEUES ******/
         this.activePowers=[]
@@ -44,14 +45,12 @@ class EventsManager{
         if (!isPlayer){
         
             newObject.id = Object.keys(dic).length.toString();
-            console.log("----------------------------- enemigos en diccionarios -------------------");
-            console.log("------------------------------------------------- -------------------");
-            console.log("----------------------------- --------------------------------------");
+
             
         }
         
         dic[newObject.id]=newObject;
-        console.log(dic);
+   
         
     }
 
@@ -59,18 +58,22 @@ class EventsManager{
         return this.players;
     }
 
+    setEnemiesQuantity(value){
+        this.enemiesQuantity+=value;
+    }
+
+    getEnemiesQuantity(){
+        return this.enemiesQuantity;
+    }
+
     getElementsQuantity(dic){
        return Object.keys(dic).length;
     }
 
     deleteFromDic(dic,id){
-        console.log("delete ****************&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" );
-        console.log("dic: " +dic);
-        console.log(dic);
-        console.log("id: "+ id);
+
         delete dic[id.toString()];
-        console.log(dic);
-        console.log("object was removed");
+
     }
 
     /** 
@@ -371,7 +374,7 @@ class EventsManager{
                     if(this.gameBoard.getPosition(event.object.x,event.object.y).gameElement.destroy())
                     {
                         this.deleteFromDic(this.enemies,this.gameBoard.getPosition(event.object.x,event.object.y).gameElement.id.toString());
-
+                        this.setEnemiesQuantity(-1);
                         this.gameBoard.setPosition(event.object.x,event.object.y,
                             new BoardPosition(Data.free,new WhiteSpace(imageNames.freeSpace),-1));
                     }
@@ -447,7 +450,6 @@ class EventsManager{
 
 
     applyTankPower(event){
-        console.log("aplicando poder");
 
         if (event.object===undefined || !event.object.getIsEnable()){
             return;
@@ -456,8 +458,6 @@ class EventsManager{
         else{
 
             event.object.applyPower();
-            console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ aplicado a tanque  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-            console.log(event.object);
         }
 
     }
